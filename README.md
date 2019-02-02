@@ -22,5 +22,6 @@ Used Equipment
 Screenshots
 -----------------
 * Here are screenshots of my project setup:
-![](https://raw.githubusercontent.com/antimodular/ofxVisca/master/docs/Screen_Shot.png)
-
+![](https://raw.githubusercontent.com/antimodular/ofxVisca/master/docs/Screen_Shot.jpg)
+![](https://github.com/antimodular/mbp-hacking/blob/master/2018-03-18%2014.56.31.jpg)
+<img align="left" width="100" height="100" src="https://raw.githubusercontent.com/antimodular/ofxVisca/master/docs/Screen_Shot.png">
