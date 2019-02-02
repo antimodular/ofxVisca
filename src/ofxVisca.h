@@ -4,23 +4,28 @@
 
 #include <ofSerial.h> 
 #include "ofxGui.h"
+#include "ofParameter.h"
 
-//class visca_item{
-//    
-//    std::vector<unsigned char> item_command;
-//    string item_name;
-//    ofParameter<bool> bButton;
-//    
-//    void setup(string _name){
-//        item_name = _name;
-//    }
-//    std::vector<unsigned char> checkGui(){
-//        if(bButton){
-//            bButton = false;
-//            return item_command;
-//        }
-//    }
-//};
+class visca_item{
+public:
+    void setup(std::string _name, std::vector<unsigned char> _command){
+        item_name = _name;
+        item_command = _command;
+    }
+    std::vector<unsigned char> checkGui(){
+        if(bButton){
+            bButton = false;
+            return item_command;
+        }
+    }
+      ofParameter<bool> bButton;
+//private:
+    std::vector<unsigned char> item_command;
+    std::string item_name;
+  
+    
+   
+};
 
 struct visca_commands {
     //-----menu
@@ -76,7 +81,7 @@ public:
     
     ofxPanel gui_visca;
      ofParameterGroup parameters_menu;
-    ofParameter<bool> menuON;
+//    ofParameter<bool> menuON;
     ofParameter<bool> menuOFF;
     ofParameter<bool> menuBACK;
     ofParameter<bool> menuLEFT;
@@ -93,6 +98,7 @@ public:
     
     visca_commands commands;
     
+    std::vector<visca_item> allVisca;
 private:	
     ofSerial serial;
     bool serialActive;

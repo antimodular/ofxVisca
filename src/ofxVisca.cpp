@@ -43,7 +43,7 @@ bool ofxVisca::connect(int _device){
     lastSendTime = ofGetElapsedTimeMillis();
     
     parameters_menu.setName("menu");
-    parameters_menu.add(menuON.set("menuON",false));
+    parameters_menu.add(allVisca[0].bButton.set("menuON",false));
     parameters_menu.add(menuOFF.set("menuOFF",false));
     parameters_menu.add(menuBACK.set("menuBACK",false));
     parameters_menu.add(menuUP.set("menuUP",false));
@@ -68,6 +68,10 @@ bool ofxVisca::connect(int _device){
 
 
     gui_visca.loadFromFile("visca_gui.xml");
+    
+    visca_item oneItem;
+    oneItem.setup("menuON",commands.menuON);
+    allVisca.push_back(oneItem);
 }
 
 void ofxVisca::draw(int _x, int _y){
@@ -278,10 +282,10 @@ void ofxVisca::getSerialDevice(){
 }
 
 void ofxVisca::checkGui(){
-    if(menuON){
-        menuON = false;
-        addCommand(1,commands.menuON);
-    }
+//    if(menuON){
+//        menuON = false;
+//        addCommand(1,commands.menuON);
+//    }
     if(menuOFF){
         menuOFF = false;
         addCommand(1,commands.menuOFF);
