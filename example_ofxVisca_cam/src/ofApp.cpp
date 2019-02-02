@@ -24,6 +24,7 @@ void ofApp::update(){
     vidGrabber.update();
     
     if(vidGrabber.isFrameNew()){
+        
     }
     visca_object.update();
 }
