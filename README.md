@@ -22,5 +22,5 @@ Used Equipment
 Screenshots
 -----------------
 * Here are screenshots of my project setup:
-![](https://github.com/antimodular/ofxVisca/blob/master/docs/Screen_Shot.png)
+![](https://raw.githubusercontent.com/antimodular/ofxVisca/master/docs/Screen_Shot.png)
 
