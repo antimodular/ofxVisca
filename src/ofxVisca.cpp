@@ -299,5 +299,9 @@ void ofxVisca::checkGui(){
         night = false;
         addCommand(1,commands.night);
     }
+    if(menuUP){
+        menuUP = false;
+        addCommand(1,commands.menuUP);
+    }
 }
 
