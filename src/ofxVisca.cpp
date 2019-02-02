@@ -14,14 +14,32 @@
 //0x80 needs to be changed to reflect actual camera ID. the id is set in the camera.
 //usually it is 1 which means 0x81
 
+//-----menu
 vector<unsigned char> menuON = {0x80, 0x01, 0x06, 0x06, 0x02, 0xFF};
 vector<unsigned char> menuOFF = {0x80, 0x01, 0x06, 0x06, 0x03, 0xFF}; //Menu off
 
+//-----filter
 vector<unsigned char> dnManual = {0x80, 0x01, 0x04, 0x51, 0x03, 0xFF};  // day night manual
 vector<unsigned char> night = {0x80, 0x01, 0x04, 0x01, 0x02, 0xFF};
 vector<unsigned char> day = {0x80, 0x01, 0x04, 0x01, 0x03, 0xFF};
 
-//does not work on CV345-CS, CV380-CS
+//----digital zoom
+vector<unsigned char> dzoomON = {0x80, 0x01, 0x04, 0x06, 0x02, 0xFF}; // d zoom on
+vector<unsigned char> dzoomOFF = {0x80, 0x01, 0x04, 0x06, 0x03, 0xFF}; // d zoom off
+
+vector<unsigned char> dzoomCombined = {0x80, 0x01, 0x04, 0x36, 0x00, 0xFF}; // Optical/Digital Zoom Combined
+vector<unsigned char> dzoomSeparate = {0x80, 0x01, 0x04, 0x36, 0x01, 0xFF}; // Optical/Digital Zoom Separate
+vector<unsigned char> dzoomSTOP = {0x80, 0x01, 0x04, 0x06, 0x00, 0xFF}; //
+
+vector<unsigned char> dzoomTELE = {0x80, 0x01, 0x04, 0x06, 0x20, 0xFF}; //0x2p p=0 (Low) to 7 (High)
+vector<unsigned char> dzoomTELE0 = {0x81, 0x01, 0x04, 0x06, 0x20, 0xFF}; 
+vector<unsigned char> dzoomTELE7 = {0x81, 0x01, 0x04, 0x06, 0x27, 0xFF}; 
+vector<unsigned char> dzoomWIDE = {0x80, 0x01, 0x04, 0x06, 0x30, 0xFF}; //0x3p,  Enabled during Separate Mode
+
+vector<unsigned char> dzoomDIRECT = {0x80, 0x01, 0x04, 0x46, 0x00, 0x00, 0x00, 0x00, 0xFF}; //pq: D-Zoom Position,  Enabled during Separate Mode
+
+
+//-----does not work on CV345-CS, CV380-CS
 vector<unsigned char> powerON = {0x80, 0x01, 0x04, 0x00, 0x02, 0xFF}; 
 vector<unsigned char> powerOFF = {0x80, 0x01, 0x04, 0x00, 0x03, 0xFF};
 
@@ -95,6 +113,21 @@ void ofxVisca::addCommand(int _camID, vector<unsigned char> _command){
     
     serialMessages.push_back(_command);
 }
+
+void ofxVisca::addCommand(int _camID, vector<unsigned char> _command, int _bytePosA, int _valueA, int _bytePosB, int _valueB){
+    
+     ofLog()<<"byte# "<<ofToString(_bytePosA)<<" as hex "<<ofToHex(_command[_bytePosA]);
+    
+    int temp_id = int(_command[_bytePosA]) + _valueA;
+    ofLog()<<"byte# "<<ofToString(_bytePosA)<<" as int "<<int(_command[_bytePosA])<<" +1 "<<temp_id;
+    
+    _command[_bytePosA] = (unsigned char) temp_id;
+    ofLog()<<"new byte as hex "<<ofToHex(_command[_bytePosA]);
+    
+//    serialMessages.push_back(_command);
+    addCommand(_camID,_command);
+}
+
 void ofxVisca::keyReleased(int key){ 
     
     if(key == 'm'){
@@ -117,6 +150,28 @@ void ofxVisca::keyReleased(int key){
         addCommand(1,day);
         ofLog()<<"day";
     }
+    
+    if(key == '0'){
+        addCommand(1,dzoomON);
+        ofLog()<<"dzoomON";
+    }
+    if(key == '9'){
+        addCommand(1,dzoomOFF);
+        ofLog()<<"dzoomOFF";
+    }
+    if(key == '8'){
+        addCommand(1,dzoomTELE, 4, 7);
+//         serialMessages.push_back(dzoomTELE7);
+        ofLog()<<"dzoomTELE 7";
+    }
+    if(key == '7'){
+        addCommand(1,dzoomTELE, 4, 0);
+        //         serialMessages.push_back(dzoomTELE0);
+        ofLog()<<"dzoomTELE 0";
+    }
+    
+    //------did not work
+    /*
     if(key == '0'){
         addCommand(1,powerON);
         ofLog()<<"powerON";
@@ -125,6 +180,7 @@ void ofxVisca::keyReleased(int key){
         addCommand(1,powerOFF);
         ofLog()<<"powerOFF";
     }
+     */
 }
 
 void ofxVisca::serialSending(){

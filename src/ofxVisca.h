@@ -19,6 +19,7 @@ public:
     std::vector<std::vector<unsigned char>> serialMessages;    
     
     void addCommand(int _camID, std::vector<unsigned char> _command);
+    void addCommand(int _camID, std::vector<unsigned char> _command, int _bytePosA, int _valueA, int _bytePosB = -1, int _valueB = -1);
     
 private:	
     ofSerial serial;

@@ -8,14 +8,16 @@
 void ofApp::setup(){
     ofSetVerticalSync(true);
     
-    bSendSerialMessage = false;
-    ofBackground(255);    
-    ofSetLogLevel(OF_LOG_VERBOSE);
-    
-    visca_object.connect();
     
     vidGrabber.setDeviceID(1);
     vidGrabber.initGrabber(1920, 1080);
+    
+    bSendSerialMessage = false;
+    ofBackground(255);    
+//    ofSetLogLevel(OF_LOG_VERBOSE);
+    
+    visca_object.connect();
+
 }
 
 //--------------------------------------------------------------
@@ -52,34 +54,6 @@ void ofApp::keyPressed  (int key){
 void ofApp::keyReleased(int key){ 
     
     visca_object.keyReleased(key);
-//    if(key == 'd'){
-//        visca_object.serialMessages.push_back(menuON2);
-//        ofLog()<<"menuON2";
-//    }
-//    if(key == 'c'){
-//        visca_object.serialMessages.push_back(menuOFF2);
-//        ofLog()<<"menuOFF2";
-//    }
-//    if(key == '1'){
-//        visca_object.serialMessages.push_back(dnManual);
-//        ofLog()<<"dnManual";
-//    }
-//    if(key == '2'){
-//        visca_object.serialMessages.push_back(night);
-//        ofLog()<<"night";
-//    }
-//    if(key == '3'){
-//        visca_object.serialMessages.push_back(day);
-//        ofLog()<<"day";
-//    }
-//    if(key == '0'){
-//        visca_object.serialMessages.push_back(powerON);
-//        ofLog()<<"powerON";
-//    }
-//    if(key == '9'){
-//        visca_object.serialMessages.push_back(powerOFF);
-//        ofLog()<<"powerOFF";
-//    }
 }
 
 //--------------------------------------------------------------
