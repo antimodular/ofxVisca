@@ -18,6 +18,7 @@ void ofApp::setup(){
     
     visca_object.connect();
 
+    bShowGui = true;
 }
 
 //--------------------------------------------------------------
@@ -41,7 +42,9 @@ void ofApp::draw(){
     ofDrawBitmapStringHighlight("fps "+ofToString(ofGetFrameRate(),1), 10,30);
 
     visca_object.draw(10,100);
-    
+    if(bShowGui){
+        visca_object.gui_visca.draw();
+    }
 }
 
 
@@ -54,6 +57,10 @@ void ofApp::keyPressed  (int key){
 void ofApp::keyReleased(int key){ 
     
     visca_object.keyReleased(key);
+    if(key == 'g'){
+        bShowGui = !bShowGui;
+    }
+        
 }
 
 //--------------------------------------------------------------

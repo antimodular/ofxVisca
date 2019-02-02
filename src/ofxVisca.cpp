@@ -14,34 +14,7 @@
 //0x80 needs to be changed to reflect actual camera ID. the id is set in the camera.
 //usually it is 1 which means 0x81
 
-//-----menu
-vector<unsigned char> menuON = {0x80, 0x01, 0x06, 0x06, 0x02, 0xFF};
-vector<unsigned char> menuOFF = {0x80, 0x01, 0x06, 0x06, 0x03, 0xFF}; //Menu off
 
-//-----filter
-vector<unsigned char> dnManual = {0x80, 0x01, 0x04, 0x51, 0x03, 0xFF};  // day night manual
-vector<unsigned char> night = {0x80, 0x01, 0x04, 0x01, 0x02, 0xFF};
-vector<unsigned char> day = {0x80, 0x01, 0x04, 0x01, 0x03, 0xFF};
-
-//----digital zoom
-vector<unsigned char> dzoomON = {0x80, 0x01, 0x04, 0x06, 0x02, 0xFF}; // d zoom on
-vector<unsigned char> dzoomOFF = {0x80, 0x01, 0x04, 0x06, 0x03, 0xFF}; // d zoom off
-
-vector<unsigned char> dzoomCombined = {0x80, 0x01, 0x04, 0x36, 0x00, 0xFF}; // Optical/Digital Zoom Combined
-vector<unsigned char> dzoomSeparate = {0x80, 0x01, 0x04, 0x36, 0x01, 0xFF}; // Optical/Digital Zoom Separate
-vector<unsigned char> dzoomSTOP = {0x80, 0x01, 0x04, 0x06, 0x00, 0xFF}; //
-
-vector<unsigned char> dzoomTELE = {0x80, 0x01, 0x04, 0x06, 0x20, 0xFF}; //0x2p p=0 (Low) to 7 (High)
-vector<unsigned char> dzoomTELE0 = {0x81, 0x01, 0x04, 0x06, 0x20, 0xFF}; 
-vector<unsigned char> dzoomTELE7 = {0x81, 0x01, 0x04, 0x06, 0x27, 0xFF}; 
-vector<unsigned char> dzoomWIDE = {0x80, 0x01, 0x04, 0x06, 0x30, 0xFF}; //0x3p,  Enabled during Separate Mode
-
-vector<unsigned char> dzoomDIRECT = {0x80, 0x01, 0x04, 0x46, 0x00, 0x00, 0x00, 0x00, 0xFF}; //pq: D-Zoom Position,  Enabled during Separate Mode
-
-
-//-----does not work on CV345-CS, CV380-CS
-vector<unsigned char> powerON = {0x80, 0x01, 0x04, 0x00, 0x02, 0xFF}; 
-vector<unsigned char> powerOFF = {0x80, 0x01, 0x04, 0x00, 0x03, 0xFF};
 
 ofxVisca::ofxVisca(){
     
@@ -58,7 +31,7 @@ bool ofxVisca::connect(int _device){
     
     // this should be set to whatever com port your serial device is connected to.
     // (ie, COM4 on a pc, /dev/tty.... on linux, /dev/tty... on a mac)
-
+    
     if(_device == -1){
         getSerialDevice();
     }else{
@@ -69,35 +42,65 @@ bool ofxVisca::connect(int _device){
     serialSendPause = 200;
     lastSendTime = ofGetElapsedTimeMillis();
     
+    parameters_menu.setName("menu");
+    parameters_menu.add(menuON.set("menuON",false));
+    parameters_menu.add(menuOFF.set("menuOFF",false));
+    parameters_menu.add(menuBACK.set("menuBACK",false));
+    parameters_menu.add(menuUP.set("menuUP",false));
+    parameters_menu.add(menuDOWN.set("menuDOWN",false));
+    parameters_menu.add(menuLEFT.set("menuLEFT",false));
+    parameters_menu.add(menuRIGHT.set("menuRIGHT",false));
+    
+    parameters_lens.setName("lens");
+    parameters_lens.add(dnManual.set("dnManual",false));
+    parameters_lens.add(day.set("day",false));
+    parameters_lens.add(night.set("night",false));
+    
+    parameters_dzoom.setName("dZoom");
+    
+    gui_visca.setup();
+    gui_visca.setName("VISCA");
+    gui_visca.setPosition(0,0);
+    gui_visca.add(parameters_menu);
+    gui_visca.add(parameters_lens);
+    gui_visca.add(parameters_dzoom);
+    gui_visca.setDefaultHeaderBackgroundColor(ofColor(255,0,0));
+
+
+    gui_visca.loadFromFile("visca_gui.xml");
 }
 
 void ofxVisca::draw(int _x, int _y){
-    ofPushMatrix();
-    ofTranslate(_x, _y);
-    int temp_y = 0;
-    ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
-     ofDrawBitmapString("key n | hide menu", 0, temp_y+=15);
-     ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
-     ofDrawBitmapString("key 2 | IR pass filter", 0, temp_y+=15);
-     ofDrawBitmapString("key 3 | IR cut filter", 0, temp_y+=15);
-    ofPopMatrix();
+//    ofPushMatrix();
+//    ofTranslate(_x, _y);
+//    int temp_y = 0;
+//    ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
+//    ofDrawBitmapString("key n | hide menu", 0, temp_y+=15);
+//    ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
+//    ofDrawBitmapString("key 2 | IR pass filter", 0, temp_y+=15);
+//    ofDrawBitmapString("key 3 | IR cut filter", 0, temp_y+=15);
+//    ofPopMatrix();
 }
+
 void ofxVisca::update(){
+    
+    checkGui();
+    
     if(ofGetElapsedTimeMillis() - lastSendTime > serialSendPause && serialMessages.size() > 0){
         lastSendTime = ofGetElapsedTimeMillis();
         serialSending();
     }  
     
     /*
-    int myByte = serial.readByte();
-
-    if ( myByte == OF_SERIAL_NO_DATA ){
-//        printf("no data was read");
-    } else if ( myByte == OF_SERIAL_ERROR ){
-        printf("an error occurred");
-    } else {
-        printf("myByte is %d", myByte);
-    }
+     int myByte = serial.readByte();
+     
+     if ( myByte == OF_SERIAL_NO_DATA ){
+     //        printf("no data was read");
+     } else if ( myByte == OF_SERIAL_ERROR ){
+     printf("an error occurred");
+     } else {
+     printf("myByte is %d", myByte);
+     }
      */
 }
 
@@ -116,7 +119,7 @@ void ofxVisca::addCommand(int _camID, vector<unsigned char> _command){
 
 void ofxVisca::addCommand(int _camID, vector<unsigned char> _command, int _bytePosA, int _valueA, int _bytePosB, int _valueB){
     
-     ofLog()<<"byte# "<<ofToString(_bytePosA)<<" as hex "<<ofToHex(_command[_bytePosA]);
+    ofLog()<<"byte# "<<ofToString(_bytePosA)<<" as hex "<<ofToHex(_command[_bytePosA]);
     
     int temp_id = int(_command[_bytePosA]) + _valueA;
     ofLog()<<"byte# "<<ofToString(_bytePosA)<<" as int "<<int(_command[_bytePosA])<<" +1 "<<temp_id;
@@ -124,62 +127,64 @@ void ofxVisca::addCommand(int _camID, vector<unsigned char> _command, int _byteP
     _command[_bytePosA] = (unsigned char) temp_id;
     ofLog()<<"new byte as hex "<<ofToHex(_command[_bytePosA]);
     
-//    serialMessages.push_back(_command);
+    //    serialMessages.push_back(_command);
     addCommand(_camID,_command);
 }
 
 void ofxVisca::keyReleased(int key){ 
     
-    if(key == 'm'){
-        addCommand(1,menuON);
-        ofLog()<<"menuON";
-    }
-    if(key == 'n'){
-         addCommand(1,menuOFF);
-        ofLog()<<"menuOFF";
-    }
-    if(key == '1'){
-         addCommand(1,dnManual);
-        ofLog()<<"dnManual";
-    }
-    if(key == '2'){
-        addCommand(1,night);
-        ofLog()<<"night";
-    }
-    if(key == '3'){
-        addCommand(1,day);
-        ofLog()<<"day";
-    }
+//    if(key == 'm'){
+//        addCommand(1,commands.menuON);
+//        ofLog()<<"menuON";
+//    }
+//    if(key == 'n'){
+//        addCommand(1,commands.menuOFF);
+//        ofLog()<<"menuOFF";
+//    }
+//    if(key == '1'){
+//        addCommand(1,commands.dnManual);
+//        ofLog()<<"dnManual";
+//    }
+//    if(key == '2'){
+//        addCommand(1,commands.night);
+//        ofLog()<<"night";
+//    }
+//    if(key == '3'){
+//        addCommand(1,commands.day);
+//        ofLog()<<"day";
+//    }
     
     if(key == '0'){
-        addCommand(1,dzoomON);
+        addCommand(1,commands.dzoomON);
         ofLog()<<"dzoomON";
     }
     if(key == '9'){
-        addCommand(1,dzoomOFF);
+        addCommand(1,commands.dzoomOFF);
         ofLog()<<"dzoomOFF";
     }
     if(key == '8'){
-        addCommand(1,dzoomTELE, 4, 7);
-//         serialMessages.push_back(dzoomTELE7);
+        addCommand(1,commands.dzoomTELE, 4, 7);
+        addCommand(1,commands.dzoomSTOP);
+        //         serialMessages.push_back(dzoomTELE7);
         ofLog()<<"dzoomTELE 7";
     }
     if(key == '7'){
-        addCommand(1,dzoomTELE, 4, 0);
+        addCommand(1,commands.dzoomTELE, 4, 1);
+        addCommand(1,commands.dzoomSTOP);
         //         serialMessages.push_back(dzoomTELE0);
         ofLog()<<"dzoomTELE 0";
     }
     
     //------did not work
     /*
-    if(key == '0'){
-        addCommand(1,powerON);
-        ofLog()<<"powerON";
-    }
-    if(key == '9'){
-        addCommand(1,powerOFF);
-        ofLog()<<"powerOFF";
-    }
+     if(key == '0'){
+     addCommand(1,powerON);
+     ofLog()<<"powerON";
+     }
+     if(key == '9'){
+     addCommand(1,powerOFF);
+     ofLog()<<"powerOFF";
+     }
      */
 }
 
@@ -240,7 +245,7 @@ void ofxVisca::serialSending(){
             //            }
             cout<<"*sendCmd "<<ofToHex(sendCmd)<<", size "<<sizeof(sendCmd)<<endl;
             
-//            ofLog()<<"*sendCmd "<<sendCmd;
+            //            ofLog()<<"*sendCmd "<<sendCmd;
         }
         
         //        serialMessages.erase(serialMessages.begin());
@@ -270,5 +275,29 @@ void ofxVisca::getSerialDevice(){
         }
     }
     
+}
+
+void ofxVisca::checkGui(){
+    if(menuON){
+        menuON = false;
+        addCommand(1,commands.menuON);
+    }
+    if(menuOFF){
+        menuOFF = false;
+        addCommand(1,commands.menuOFF);
+    }
+    
+    if(dnManual){
+        dnManual = false;
+        addCommand(1,commands.dnManual);
+    }
+    if(day){
+        day = false;
+        addCommand(1,commands.day);
+    }
+    if(night){
+        night = false;
+        addCommand(1,commands.night);
+    }
 }
 

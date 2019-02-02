@@ -36,6 +36,7 @@ public:
     
     ofxVisca visca_object;
     
+    bool bShowGui;
 };
 
 
