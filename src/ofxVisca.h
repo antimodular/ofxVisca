@@ -76,7 +76,7 @@ public:
     
     ofxPanel gui_visca;
      ofParameterGroup parameters_menu;
-    ofParameter<bool> menuON;
+    ofParameter<bool> menuON; //ofxButton does not work in ofParameterGroup
     ofParameter<bool> menuOFF;
     ofParameter<bool> menuBACK;
     ofParameter<bool> menuLEFT;

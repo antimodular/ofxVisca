@@ -80,6 +80,8 @@ void ofxVisca::draw(int _x, int _y){
 //    ofDrawBitmapString("key 2 | IR pass filter", 0, temp_y+=15);
 //    ofDrawBitmapString("key 3 | IR cut filter", 0, temp_y+=15);
 //    ofPopMatrix();
+    
+    
 }
 
 void ofxVisca::update(){
@@ -286,7 +288,15 @@ void ofxVisca::checkGui(){
         menuOFF = false;
         addCommand(1,commands.menuOFF);
     }
-    
+    if(menuDOWN){
+        menuDOWN = false;
+        addCommand(1,commands.menuDOWN);
+    }
+    if(menuUP){
+        menuUP = false;
+        addCommand(1,commands.menuUP);
+    }
+
     if(dnManual){
         dnManual = false;
         addCommand(1,commands.dnManual);

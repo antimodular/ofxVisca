@@ -13,7 +13,7 @@ void ofApp::setup(){
     ofSetLogLevel(OF_LOG_VERBOSE);
     
     visca_object.connect();
-    
+    bShowGui = true;
 }
 
 //--------------------------------------------------------------
@@ -75,6 +75,11 @@ void ofApp::draw(){
      msg += "(at time " + ofToString(readTime, 3) + ")";
      font.drawString(msg, 50, 100);
      */
+    
+    visca_object.draw(10,100);
+    if(bShowGui){
+        visca_object.gui_visca.draw();
+    }
 }
 
 
@@ -87,6 +92,10 @@ void ofApp::keyPressed  (int key){
 void ofApp::keyReleased(int key){ 
     
     visca_object.keyReleased(key);
+    if(key == 'g'){
+        bShowGui = !bShowGui;
+    }
+    
 //    if(key == 'd'){
 //        visca_object.serialMessages.push_back(menuON2);
 //        ofLog()<<"menuON2";
