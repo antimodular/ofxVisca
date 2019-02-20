@@ -2,60 +2,83 @@
 
 #pragma once
 
+#include "ofMain.h"
+
 #include <ofSerial.h> 
 #include "ofxGui.h"
 
-//class visca_item{
-//    
-//    std::vector<unsigned char> item_command;
-//    string item_name;
-//    ofParameter<bool> bButton;
-//    
-//    void setup(string _name){
-//        item_name = _name;
-//    }
-//    std::vector<unsigned char> checkGui(){
+class visca_item{
+    
+public:
+    vector<unsigned char> item_command;
+    string item_name;
+    ofParameter<bool> bButton;
+    bool useCommand;
+    
+    void setup(string _name, vector<unsigned char> _command){
+        item_name = _name;
+        item_command = _command;
+//        parameters.add(bButton("bButton",true));
+//        bButton.addListener(this, &visca_item::buttonChange);
+    }
+//    vector<unsigned char> checkGui(){
 //        if(bButton){
 //            bButton = false;
 //            return item_command;
 //        }
 //    }
-//};
+    
+    void buttonChange(bool & _state){
+        ofLogNotice() << "buttonChange " << _state;
+        bButton = false;
+//        addCommand(1,commands.menuON)
+        useCommand = true;
+    }
+    
+    void addToGui(ofParameterGroup & _group){
+//        _group.add(bButton("bButton",true));
+        _group.add(bButton.set(item_name,false));
+       bButton.addListener(this, &visca_item::buttonChange);
+    }
+    
+private:
+    
+};
 
 struct visca_commands {
     //-----menu
-    std::vector<unsigned char> menuON = {0x80, 0x01, 0x06, 0x06, 0x02, 0xFF};
-    std::vector<unsigned char> menuOFF = {0x80, 0x01, 0x06, 0x06, 0x03, 0xFF}; //Menu off
-    std::vector<unsigned char> menuBACK = {0x80, 0x01, 0x06, 0x06, 0x00, 0xFF};
-    std::vector<unsigned char> menuUP = {0x80, 0x01, 0x06, 0x06, 0x11, 0xFF};
-    std::vector<unsigned char> menuDOWN = {0x80, 0x01, 0x06, 0x06, 0x12, 0xFF};
-    std::vector<unsigned char> menuLEFT = {0x80, 0x01, 0x06, 0x06, 0x14, 0xFF};
-    std::vector<unsigned char> menuRIGHT = {0x80, 0x01, 0x06, 0x06, 0x18, 0xFF};
+    vector<unsigned char> menuON = {0x80, 0x01, 0x06, 0x06, 0x02, 0xFF};
+    vector<unsigned char> menuOFF = {0x80, 0x01, 0x06, 0x06, 0x03, 0xFF}; //Menu off
+    vector<unsigned char> menuBACK = {0x80, 0x01, 0x06, 0x06, 0x00, 0xFF};
+    vector<unsigned char> menuUP = {0x80, 0x01, 0x06, 0x06, 0x11, 0xFF};
+    vector<unsigned char> menuDOWN = {0x80, 0x01, 0x06, 0x06, 0x12, 0xFF};
+    vector<unsigned char> menuLEFT = {0x80, 0x01, 0x06, 0x06, 0x14, 0xFF};
+    vector<unsigned char> menuRIGHT = {0x80, 0x01, 0x06, 0x06, 0x18, 0xFF};
     
     //-----filter
-    std::vector<unsigned char> dnManual = {0x80, 0x01, 0x04, 0x51, 0x03, 0xFF};  // day night manual
-    std::vector<unsigned char> night = {0x80, 0x01, 0x04, 0x01, 0x02, 0xFF};
-    std::vector<unsigned char> day = {0x80, 0x01, 0x04, 0x01, 0x03, 0xFF};
+    vector<unsigned char> dnManual = {0x80, 0x01, 0x04, 0x51, 0x03, 0xFF};  // day night manual
+    vector<unsigned char> night = {0x80, 0x01, 0x04, 0x01, 0x02, 0xFF};
+    vector<unsigned char> day = {0x80, 0x01, 0x04, 0x01, 0x03, 0xFF};
     
     //----digital zoom
-    std::vector<unsigned char> dzoomON = {0x80, 0x01, 0x04, 0x06, 0x02, 0xFF}; // d zoom on
-    std::vector<unsigned char> dzoomOFF = {0x80, 0x01, 0x04, 0x06, 0x03, 0xFF}; // d zoom off
+    vector<unsigned char> dzoomON = {0x80, 0x01, 0x04, 0x06, 0x02, 0xFF}; // d zoom on
+    vector<unsigned char> dzoomOFF = {0x80, 0x01, 0x04, 0x06, 0x03, 0xFF}; // d zoom off
     
-    std::vector<unsigned char> dzoomCombined = {0x80, 0x01, 0x04, 0x36, 0x00, 0xFF}; // Optical/Digital Zoom Combined
-    std::vector<unsigned char> dzoomSeparate = {0x80, 0x01, 0x04, 0x36, 0x01, 0xFF}; // Optical/Digital Zoom Separate
-    std::vector<unsigned char> dzoomSTOP = {0x80, 0x01, 0x04, 0x06, 0x00, 0xFF}; //
+    vector<unsigned char> dzoomCombined = {0x80, 0x01, 0x04, 0x36, 0x00, 0xFF}; // Optical/Digital Zoom Combined
+    vector<unsigned char> dzoomSeparate = {0x80, 0x01, 0x04, 0x36, 0x01, 0xFF}; // Optical/Digital Zoom Separate
+    vector<unsigned char> dzoomSTOP = {0x80, 0x01, 0x04, 0x06, 0x00, 0xFF}; //
     
-    std::vector<unsigned char> dzoomTELE = {0x80, 0x01, 0x04, 0x06, 0x20, 0xFF}; //0x2p p=0 (Low) to 7 (High)
-    std::vector<unsigned char> dzoomTELE0 = {0x81, 0x01, 0x04, 0x06, 0x20, 0xFF}; 
-    std::vector<unsigned char> dzoomTELE7 = {0x81, 0x01, 0x04, 0x06, 0x27, 0xFF}; 
-    std::vector<unsigned char> dzoomWIDE = {0x80, 0x01, 0x04, 0x06, 0x30, 0xFF}; //0x3p,  Enabled during Separate Mode
+    vector<unsigned char> dzoomTELE = {0x80, 0x01, 0x04, 0x06, 0x20, 0xFF}; //0x2p p=0 (Low) to 7 (High)
+    vector<unsigned char> dzoomTELE0 = {0x81, 0x01, 0x04, 0x06, 0x20, 0xFF}; 
+    vector<unsigned char> dzoomTELE7 = {0x81, 0x01, 0x04, 0x06, 0x27, 0xFF}; 
+    vector<unsigned char> dzoomWIDE = {0x80, 0x01, 0x04, 0x06, 0x30, 0xFF}; //0x3p,  Enabled during Separate Mode
     
-    std::vector<unsigned char> dzoomDIRECT = {0x80, 0x01, 0x04, 0x46, 0x00, 0x00, 0x00, 0x00, 0xFF}; //pq: D-Zoom Position,  Enabled during Separate Mode
+    vector<unsigned char> dzoomDIRECT = {0x80, 0x01, 0x04, 0x46, 0x00, 0x00, 0x00, 0x00, 0xFF}; //pq: D-Zoom Position,  Enabled during Separate Mode
     
     
     //-----does not work on CV345-CS, CV380-CS
-    std::vector<unsigned char> powerON = {0x80, 0x01, 0x04, 0x00, 0x02, 0xFF}; 
-    std::vector<unsigned char> powerOFF = {0x80, 0x01, 0x04, 0x00, 0x03, 0xFF};
+    vector<unsigned char> powerON = {0x80, 0x01, 0x04, 0x00, 0x02, 0xFF}; 
+    vector<unsigned char> powerOFF = {0x80, 0x01, 0x04, 0x00, 0x03, 0xFF};
 };
 
 class ofxVisca {
@@ -69,20 +92,20 @@ public:
     void draw(int _x, int _y);
     void keyReleased(int key);
     
-    std::vector<std::vector<unsigned char>> serialMessages;    
+    vector<vector<unsigned char>> serialMessages;    
     
-    void addCommand(int _camID, std::vector<unsigned char> _command);
-    void addCommand(int _camID, std::vector<unsigned char> _command, int _bytePosA, int _valueA, int _bytePosB = -1, int _valueB = -1);
+    void addCommand(int _camID, vector<unsigned char> _command);
+    void addCommand(int _camID, vector<unsigned char> _command, int _bytePosA, int _valueA, int _bytePosB = -1, int _valueB = -1);
     
     ofxPanel gui_visca;
      ofParameterGroup parameters_menu;
-    ofParameter<bool> menuON; //ofxButton does not work in ofParameterGroup
-    ofParameter<bool> menuOFF;
-    ofParameter<bool> menuBACK;
-    ofParameter<bool> menuLEFT;
-    ofParameter<bool> menuRIGHT;
-    ofParameter<bool> menuUP;
-    ofParameter<bool> menuDOWN;
+//    ofParameter<bool> menuON; //ofxButton does not work in ofParameterGroup
+//    ofParameter<bool> menuOFF;
+//    ofParameter<bool> menuBACK;
+//    ofParameter<bool> menuLEFT;
+//    ofParameter<bool> menuRIGHT;
+//    ofParameter<bool> menuUP;
+//    ofParameter<bool> menuDOWN;
     
     ofParameterGroup parameters_lens;
     ofParameter<bool> dnManual;
@@ -93,11 +116,13 @@ public:
     
     visca_commands commands;
     
+    vector<visca_item> all_viscaItems;
+    
 private:	
     ofSerial serial;
     bool serialActive;
     int myBaud;
-    std::string serialID;
+    string serialID;
     
     unsigned long lastSendTime;
     bool bSerialConnected;

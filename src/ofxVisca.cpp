@@ -26,6 +26,16 @@ ofxVisca::~ofxVisca(){
 
 bool ofxVisca::connect(int _device){
     
+//    all_viscaItems.push_back(visca_item());
+    all_viscaItems.resize(7);
+    all_viscaItems[0].setup("menuON",commands.menuON);
+    all_viscaItems[1].setup("menuOFF",commands.menuOFF);
+    all_viscaItems[2].setup("menuBACK",commands.menuBACK);
+    all_viscaItems[3].setup("menuUP",commands.menuUP);
+    all_viscaItems[4].setup("menuDOWN",commands.menuDOWN);
+    all_viscaItems[5].setup("menuLEFT",commands.menuLEFT);
+    all_viscaItems[6].setup("menuRIGHT",commands.menuRIGHT);
+    
     serial.listDevices();
     vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
     
@@ -43,13 +53,20 @@ bool ofxVisca::connect(int _device){
     lastSendTime = ofGetElapsedTimeMillis();
     
     parameters_menu.setName("menu");
-    parameters_menu.add(menuON.set("menuON",false));
-    parameters_menu.add(menuOFF.set("menuOFF",false));
-    parameters_menu.add(menuBACK.set("menuBACK",false));
-    parameters_menu.add(menuUP.set("menuUP",false));
-    parameters_menu.add(menuDOWN.set("menuDOWN",false));
-    parameters_menu.add(menuLEFT.set("menuLEFT",false));
-    parameters_menu.add(menuRIGHT.set("menuRIGHT",false));
+//    parameters_menu.add(menuON.set("menuON",false));
+//    parameters.add(bButton("bButton",true));
+//    all_viscaItems[0].bButton.addListener(this, &visca_item::buttonChange);
+
+    for(int i=0; i<all_viscaItems.size(); i++){
+        all_viscaItems[i].addToGui(parameters_menu);
+    }
+//    parameters_menu.add();
+//    parameters_menu.add(menuOFF.set("menuOFF",false));
+//    parameters_menu.add(menuBACK.set("menuBACK",false));
+//    parameters_menu.add(menuUP.set("menuUP",false));
+//    parameters_menu.add(menuDOWN.set("menuDOWN",false));
+//    parameters_menu.add(menuLEFT.set("menuLEFT",false));
+//    parameters_menu.add(menuRIGHT.set("menuRIGHT",false));
     
     parameters_lens.setName("lens");
     parameters_lens.add(dnManual.set("dnManual",false));
@@ -93,6 +110,12 @@ void ofxVisca::update(){
         serialSending();
     }  
     
+    for(int i=0; i<all_viscaItems.size(); i++){
+        if( all_viscaItems[i].useCommand == true){
+            all_viscaItems[i].useCommand = false;
+            addCommand(1, all_viscaItems[i].item_command);
+        }
+    }
     /*
      int myByte = serial.readByte();
      
@@ -280,22 +303,22 @@ void ofxVisca::getSerialDevice(){
 }
 
 void ofxVisca::checkGui(){
-    if(menuON){
-        menuON = false;
-        addCommand(1,commands.menuON);
-    }
-    if(menuOFF){
-        menuOFF = false;
-        addCommand(1,commands.menuOFF);
-    }
-    if(menuDOWN){
-        menuDOWN = false;
-        addCommand(1,commands.menuDOWN);
-    }
-    if(menuUP){
-        menuUP = false;
-        addCommand(1,commands.menuUP);
-    }
+//    if(menuON){
+//        menuON = false;
+//        addCommand(1,commands.menuON);
+//    }
+//    if(menuOFF){
+//        menuOFF = false;
+//        addCommand(1,commands.menuOFF);
+//    }
+//    if(menuDOWN){
+//        menuDOWN = false;
+//        addCommand(1,commands.menuDOWN);
+//    }
+//    if(menuUP){
+//        menuUP = false;
+//        addCommand(1,commands.menuUP);
+//    }
 
     if(dnManual){
         dnManual = false;
@@ -309,9 +332,6 @@ void ofxVisca::checkGui(){
         night = false;
         addCommand(1,commands.night);
     }
-    if(menuUP){
-        menuUP = false;
-        addCommand(1,commands.menuUP);
-    }
+
 }
 
