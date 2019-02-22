@@ -28,65 +28,50 @@ bool ofxVisca::connect(int _device){
     
     parameters_menu.setName("menu");
     parameters_lens.setName("lens");
-     parameters_wb.setName("whiteBalance");
+    parameters_wb.setName("whiteBalance");
     parameters_dzoom.setName("dZoom");
     
     //    all_viscaItems.push_back(visca_item());
     //all_viscaItems.emplace_back(make_shared<visca_item>());
-//    all_viscaItems.resize(12);
-    
+    all_viscaItems.resize(23);
+    //  all_viscaItems.emplace_back(visca_item());
+    //     all_viscaItems.push_back(visca_item());
+
     //------cam menu
-     all_viscaItems.push_back(visca_item());
-    all_viscaItems.back().setup("menuON",parameters_menu,commands.menuON);
-    all_viscaItems.push_back(visca_item());
-    all_viscaItems.back().setup("menuOFF",parameters_menu,commands.menuOFF);
-    all_viscaItems.push_back(visca_item());
-    all_viscaItems.back().setup("menuBACK",parameters_menu,commands.menuBACK);
-    all_viscaItems.push_back(visca_item());
-    all_viscaItems.back().setup("menuUP",parameters_menu,commands.menuUP);
-    all_viscaItems.push_back(visca_item());
-    all_viscaItems.back().setup("menuDOWN",parameters_menu,commands.menuDOWN);
-    all_viscaItems.push_back(visca_item());
-    all_viscaItems.back().setup("menuLEFT",parameters_menu,commands.menuLEFT);
-    all_viscaItems.push_back(visca_item());
-    all_viscaItems.back().setup("menuRIGHT",parameters_menu,commands.menuRIGHT);
+    int i = 0;
+    all_viscaItems[i++].setup("menuON",parameters_menu,commands.menuON);
+    all_viscaItems[i++].setup("menuOFF",parameters_menu,commands.menuOFF);
+    all_viscaItems[i++].setup("menuBACK",parameters_menu,commands.menuBACK);
+    all_viscaItems[i++].setup("menuUP",parameters_menu,commands.menuUP);
+    all_viscaItems[i++].setup("menuDOWN",parameters_menu,commands.menuDOWN);
+    all_viscaItems[i++].setup("menuLEFT",parameters_menu,commands.menuLEFT);
+    all_viscaItems[i++].setup("menuRIGHT",parameters_menu,commands.menuRIGHT);
     
     //----cam lens
-    all_viscaItems.push_back(visca_item());
-    all_viscaItems.back().setup("dnManual",parameters_lens,commands.dnManual);
-    all_viscaItems.push_back(visca_item());
-    all_viscaItems.back().setup("day",parameters_lens,commands.day);
-    all_viscaItems.push_back(visca_item());
-    all_viscaItems.back().setup("night",parameters_lens,commands.night);
-
-//    //------cam white balance
-//    all_viscaItems.push_back(visca_item());
-//    all_viscaItems.back().setup("wbAuto",parameters_wb,commands.wbAuto);
-//    all_viscaItems.push_back(visca_item());
-//    all_viscaItems.back().setup("wbIndoor",parameters_wb,commands.wbIndoor);
-//    all_viscaItems.push_back(visca_item());
-//    all_viscaItems.back().setup("wbOutdoor",parameters_wb,commands.wbOutdoor);
-//    all_viscaItems.push_back(visca_item());
-//    all_viscaItems.back().setup("wbOnePush",parameters_wb,commands.wbOnePush);
-//    all_viscaItems.push_back(visca_item());
-//    all_viscaItems.back().setup("wbATW",parameters_wb,commands.wbATW);
-//    all_viscaItems.push_back(visca_item());
-//    all_viscaItems.back().setup("wbManual",parameters_wb,commands.wbManual);
-//    all_viscaItems.push_back(visca_item());
-//    all_viscaItems.back().setup("wbOnePushTrig",parameters_wb,commands.wbOnePushTrig);
-//------cam digital zoom    
-    all_viscaItems.push_back(visca_item());
-    all_viscaItems.back().setup("dzoomON",parameters_dzoom,commands.dzoomON);
-    all_viscaItems.push_back(visca_item());
-    all_viscaItems.back().setup("dzoomOFF",parameters_dzoom,commands.dzoomOFF);
-
-
+    all_viscaItems[i++].setup("dnManual",parameters_lens,commands.dnManual);
+    all_viscaItems[i++].setup("day",parameters_lens,commands.day);
+    all_viscaItems[i++].setup("night",parameters_lens,commands.night);
+    
+    //------cam white balance
+    all_viscaItems[i++].setup("wbAuto",parameters_wb,commands.wbAuto);
+    all_viscaItems[i++].setup("wbIndoor",parameters_wb,commands.wbIndoor);
+    all_viscaItems[i++].setup("wbOutdoor",parameters_wb,commands.wbOutdoor);
+    all_viscaItems[i++].setup("wbOnePush",parameters_wb,commands.wbOnePush);
+    all_viscaItems[i++].setup("wbATW",parameters_wb,commands.wbATW);
+    all_viscaItems[i++].setup("wbManual",parameters_wb,commands.wbManual);
+    all_viscaItems[i++].setup("wbOnePushTrig",parameters_wb,commands.wbOnePushTrig);
+    
+    //------cam digital zoom    
+    all_viscaItems[i++].setup("dzoomON",parameters_dzoom,commands.dzoomON);
+    all_viscaItems[i++].setup("dzoomOFF",parameters_dzoom,commands.dzoomOFF);
+    
+    
     gui_visca.setup();
     gui_visca.setName("VISCA");
     gui_visca.setPosition(0,0);
     gui_visca.add(parameters_menu);
     gui_visca.add(parameters_lens);
-//      gui_visca.add(parameters_wb);
+    gui_visca.add(parameters_wb);
     gui_visca.add(parameters_dzoom);
     gui_visca.setDefaultHeaderBackgroundColor(ofColor(255,0,0));
     
@@ -110,20 +95,20 @@ bool ofxVisca::connect(int _device){
     serialSendPause = 200;
     lastSendTime = ofGetElapsedTimeMillis();
     
-
-
+    
+    
 }
 
 void ofxVisca::draw(int _x, int _y){
-//    ofPushMatrix();
-//    ofTranslate(_x, _y);
-//    int temp_y = 0;
-//    ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
-//    ofDrawBitmapString("key n | hide menu", 0, temp_y+=15);
-//    ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
-//    ofDrawBitmapString("key 2 | IR pass filter", 0, temp_y+=15);
-//    ofDrawBitmapString("key 3 | IR cut filter", 0, temp_y+=15);
-//    ofPopMatrix();
+    //    ofPushMatrix();
+    //    ofTranslate(_x, _y);
+    //    int temp_y = 0;
+    //    ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
+    //    ofDrawBitmapString("key n | hide menu", 0, temp_y+=15);
+    //    ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
+    //    ofDrawBitmapString("key 2 | IR pass filter", 0, temp_y+=15);
+    //    ofDrawBitmapString("key 3 | IR cut filter", 0, temp_y+=15);
+    //    ofPopMatrix();
     
     
 }
@@ -185,27 +170,27 @@ void ofxVisca::addCommand(int _camID, vector<unsigned char> _command, int _byteP
 
 void ofxVisca::keyReleased(int key){ 
     
-//    if(key == 'm'){
-//        addCommand(1,commands.menuON);
-//        ofLog()<<"menuON";
-//    }
-//    if(key == 'n'){
-//        addCommand(1,commands.menuOFF);
-//        ofLog()<<"menuOFF";
-//    }
-//    if(key == '1'){
-//        addCommand(1,commands.dnManual);
-//        ofLog()<<"dnManual";
-//    }
-//    if(key == '2'){
-//        addCommand(1,commands.night);
-//        ofLog()<<"night";
-//    }
-//    if(key == '3'){
-//        addCommand(1,commands.day);
-//        ofLog()<<"day";
-//    }
-
+    //    if(key == 'm'){
+    //        addCommand(1,commands.menuON);
+    //        ofLog()<<"menuON";
+    //    }
+    //    if(key == 'n'){
+    //        addCommand(1,commands.menuOFF);
+    //        ofLog()<<"menuOFF";
+    //    }
+    //    if(key == '1'){
+    //        addCommand(1,commands.dnManual);
+    //        ofLog()<<"dnManual";
+    //    }
+    //    if(key == '2'){
+    //        addCommand(1,commands.night);
+    //        ofLog()<<"night";
+    //    }
+    //    if(key == '3'){
+    //        addCommand(1,commands.day);
+    //        ofLog()<<"day";
+    //    }
+    
     if(key == '0'){
         addCommand(1,commands.dzoomON);
         ofLog()<<"dzoomON";
@@ -254,35 +239,7 @@ void ofxVisca::serialSending(){
             cout<<ofToHex(serialMessages[0][i])<<" , ";
         }
         cout<<endl;
-        //        cout<<"*sendCmd "<<ofToHex(serialMessages[0])<<" : "<<serialMessages[0]<<endl;
-        
-        //        unsigned char* sendCmd = menuOFF;
-        
-        //        int tempLength = serialMessages[0].length();
-        //  int tempLength = sendCmd.length();      
-        
-        //    const char packet[] = {"\xBE\xEF\x03\x06\x00\xf3\x93\x01\x00\x05\x24\x00\x00"};
-        //    client.sendRawBytes(packet, 13); 
-        
-        /*
-         // convert the LED image to raw data  
-         unsigned char * ledData = new unsigned char[((int)ledImage[i].getWidth() * (int)ledImage[i].getHeight() * 3) + 3];  
-         image2data(ledImage[i], ledData, ledLayout[i]);  
-         if (i == 0) {  
-         ledData[0] = '*';  // first Teensy is the frame sync master  
-         int usec = (int)((1000000.0 / framerate) * 0.75);  
-         ledData[1] = (unsigned char)(usec);   // request the frame sync pulse  
-         ledData[2] = (unsigned char)(usec >> 8); // at 75% of the frame time  
-         } else {  
-         ledData[0] = '%';  // others sync to the master board  
-         ledData[1] = 0;  
-         ledData[2] = 0;  
-         }  
-         
-         // send the raw data to the LEDs  :-)  
-         ledSerial[i].writeBytes(ledData, 3);  
-         ledSerial[i].drain();  
-         */
+
         
         if(serialActive){
             
@@ -330,35 +287,7 @@ void ofxVisca::getSerialDevice(){
 }
 
 void ofxVisca::checkGui(){
-//    if(menuON){
-//        menuON = false;
-//        addCommand(1,commands.menuON);
-//    }
-//    if(menuOFF){
-//        menuOFF = false;
-//        addCommand(1,commands.menuOFF);
-//    }
-//    if(menuDOWN){
-//        menuDOWN = false;
-//        addCommand(1,commands.menuDOWN);
-//    }
-//    if(menuUP){
-//        menuUP = false;
-//        addCommand(1,commands.menuUP);
-//    }
 
-//    if(dnManual){
-//        dnManual = false;
-//        addCommand(1,commands.dnManual);
-//    }
-//    if(day){
-//        day = false;
-//        addCommand(1,commands.day);
-//    }
-//    if(night){
-//        night = false;
-//        addCommand(1,commands.night);
-//    }
-
+    
 }
 
