@@ -10,7 +10,7 @@ void ofApp::setup(){
     
     bSendSerialMessage = false;
     ofBackground(255);    
-    ofSetLogLevel(OF_LOG_VERBOSE);
+//    ofSetLogLevel(OF_LOG_VERBOSE);
     
     visca_object.connect();
     bShowGui = true;

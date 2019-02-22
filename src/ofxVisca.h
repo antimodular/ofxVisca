@@ -15,9 +15,11 @@ public:
     ofParameter<bool> bButton;
     bool useCommand;
     
-    void setup(string _name, vector<unsigned char> _command){
+    void setup(string _name, ofParameterGroup & _group, vector<unsigned char> _command){
         item_name = _name;
         item_command = _command;
+        
+        addToGui(_group);
 //        parameters.add(bButton("bButton",true));
 //        bButton.addListener(this, &visca_item::buttonChange);
     }
@@ -29,7 +31,7 @@ public:
 //    }
     
     void buttonChange(bool & _state){
-        ofLogNotice() << "buttonChange " << _state;
+        ofLogNotice() << "buttonChange "<< item_name<<" state " << _state;
         bButton = false;
 //        addCommand(1,commands.menuON)
         useCommand = true;
@@ -46,6 +48,8 @@ private:
 };
 
 struct visca_commands {
+    //https://www.epiphan.com/userguides/LUMiO12x/Content/UserGuides/PTZ/3-operation/VISCAcommands.htm
+    
     //-----menu
     vector<unsigned char> menuON = {0x80, 0x01, 0x06, 0x06, 0x02, 0xFF};
     vector<unsigned char> menuOFF = {0x80, 0x01, 0x06, 0x06, 0x03, 0xFF}; //Menu off
@@ -59,6 +63,17 @@ struct visca_commands {
     vector<unsigned char> dnManual = {0x80, 0x01, 0x04, 0x51, 0x03, 0xFF};  // day night manual
     vector<unsigned char> night = {0x80, 0x01, 0x04, 0x01, 0x02, 0xFF};
     vector<unsigned char> day = {0x80, 0x01, 0x04, 0x01, 0x03, 0xFF};
+    
+    //-----white balance
+    vector<unsigned char> wbAuto = {0x80, 0x01, 0x04, 0x35, 0x00, 0xFF};  //
+    vector<unsigned char> wbIndoor = {0x80, 0x01, 0x04, 0x35, 0x01, 0xFF};
+    vector<unsigned char> wbOutdoor = {0x80, 0x01, 0x04, 0x35, 0x02, 0xFF};
+    vector<unsigned char> wbOnePush = {0x80, 0x01, 0x04, 0x35, 0x03, 0xFF};  //
+    vector<unsigned char> wbATW = {0x80, 0x01, 0x04, 0x35, 0x04, 0xFF}; // Auto Tracing White Balance
+    vector<unsigned char> wbManual = {0x80, 0x01, 0x04, 0x35, 0x05, 0xFF};
+    vector<unsigned char> wbOnePushTrig = {0x80, 0x01, 0x04, 0x10, 0x05, 0xFF}; //One Push Trigger
+
+
     
     //----digital zoom
     vector<unsigned char> dzoomON = {0x80, 0x01, 0x04, 0x06, 0x02, 0xFF}; // d zoom on
@@ -77,7 +92,7 @@ struct visca_commands {
     
     
     //-----does not work on CV345-CS, CV380-CS
-    vector<unsigned char> powerON = {0x80, 0x01, 0x04, 0x00, 0x02, 0xFF}; 
+    vector<unsigned char> powerON = {0x80, 0x01, 0x04, 0x00, 0x02, 0xFF};  //8x 01 04 00 02 FF
     vector<unsigned char> powerOFF = {0x80, 0x01, 0x04, 0x00, 0x03, 0xFF};
 };
 
@@ -99,18 +114,13 @@ public:
     
     ofxPanel gui_visca;
      ofParameterGroup parameters_menu;
-//    ofParameter<bool> menuON; //ofxButton does not work in ofParameterGroup
-//    ofParameter<bool> menuOFF;
-//    ofParameter<bool> menuBACK;
-//    ofParameter<bool> menuLEFT;
-//    ofParameter<bool> menuRIGHT;
-//    ofParameter<bool> menuUP;
-//    ofParameter<bool> menuDOWN;
-    
+
     ofParameterGroup parameters_lens;
-    ofParameter<bool> dnManual;
-    ofParameter<bool> day;
-    ofParameter<bool> night;
+//    ofParameter<bool> dnManual;
+//    ofParameter<bool> day;
+//    ofParameter<bool> night;
+    
+    ofParameterGroup parameters_wb;
     
     ofParameterGroup parameters_dzoom;
     

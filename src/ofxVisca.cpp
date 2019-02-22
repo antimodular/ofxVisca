@@ -26,16 +26,74 @@ ofxVisca::~ofxVisca(){
 
 bool ofxVisca::connect(int _device){
     
-//    all_viscaItems.push_back(visca_item());
-    all_viscaItems.resize(7);
-    all_viscaItems[0].setup("menuON",commands.menuON);
-    all_viscaItems[1].setup("menuOFF",commands.menuOFF);
-    all_viscaItems[2].setup("menuBACK",commands.menuBACK);
-    all_viscaItems[3].setup("menuUP",commands.menuUP);
-    all_viscaItems[4].setup("menuDOWN",commands.menuDOWN);
-    all_viscaItems[5].setup("menuLEFT",commands.menuLEFT);
-    all_viscaItems[6].setup("menuRIGHT",commands.menuRIGHT);
+    parameters_menu.setName("menu");
+    parameters_lens.setName("lens");
+     parameters_wb.setName("whiteBalance");
+    parameters_dzoom.setName("dZoom");
     
+    //    all_viscaItems.push_back(visca_item());
+    //all_viscaItems.emplace_back(make_shared<visca_item>());
+//    all_viscaItems.resize(12);
+    
+    //------cam menu
+     all_viscaItems.push_back(visca_item());
+    all_viscaItems.back().setup("menuON",parameters_menu,commands.menuON);
+    all_viscaItems.push_back(visca_item());
+    all_viscaItems.back().setup("menuOFF",parameters_menu,commands.menuOFF);
+    all_viscaItems.push_back(visca_item());
+    all_viscaItems.back().setup("menuBACK",parameters_menu,commands.menuBACK);
+    all_viscaItems.push_back(visca_item());
+    all_viscaItems.back().setup("menuUP",parameters_menu,commands.menuUP);
+    all_viscaItems.push_back(visca_item());
+    all_viscaItems.back().setup("menuDOWN",parameters_menu,commands.menuDOWN);
+    all_viscaItems.push_back(visca_item());
+    all_viscaItems.back().setup("menuLEFT",parameters_menu,commands.menuLEFT);
+    all_viscaItems.push_back(visca_item());
+    all_viscaItems.back().setup("menuRIGHT",parameters_menu,commands.menuRIGHT);
+    
+    //----cam lens
+    all_viscaItems.push_back(visca_item());
+    all_viscaItems.back().setup("dnManual",parameters_lens,commands.dnManual);
+    all_viscaItems.push_back(visca_item());
+    all_viscaItems.back().setup("day",parameters_lens,commands.day);
+    all_viscaItems.push_back(visca_item());
+    all_viscaItems.back().setup("night",parameters_lens,commands.night);
+
+//    //------cam white balance
+//    all_viscaItems.push_back(visca_item());
+//    all_viscaItems.back().setup("wbAuto",parameters_wb,commands.wbAuto);
+//    all_viscaItems.push_back(visca_item());
+//    all_viscaItems.back().setup("wbIndoor",parameters_wb,commands.wbIndoor);
+//    all_viscaItems.push_back(visca_item());
+//    all_viscaItems.back().setup("wbOutdoor",parameters_wb,commands.wbOutdoor);
+//    all_viscaItems.push_back(visca_item());
+//    all_viscaItems.back().setup("wbOnePush",parameters_wb,commands.wbOnePush);
+//    all_viscaItems.push_back(visca_item());
+//    all_viscaItems.back().setup("wbATW",parameters_wb,commands.wbATW);
+//    all_viscaItems.push_back(visca_item());
+//    all_viscaItems.back().setup("wbManual",parameters_wb,commands.wbManual);
+//    all_viscaItems.push_back(visca_item());
+//    all_viscaItems.back().setup("wbOnePushTrig",parameters_wb,commands.wbOnePushTrig);
+//------cam digital zoom    
+    all_viscaItems.push_back(visca_item());
+    all_viscaItems.back().setup("dzoomON",parameters_dzoom,commands.dzoomON);
+    all_viscaItems.push_back(visca_item());
+    all_viscaItems.back().setup("dzoomOFF",parameters_dzoom,commands.dzoomOFF);
+
+
+    gui_visca.setup();
+    gui_visca.setName("VISCA");
+    gui_visca.setPosition(0,0);
+    gui_visca.add(parameters_menu);
+    gui_visca.add(parameters_lens);
+//      gui_visca.add(parameters_wb);
+    gui_visca.add(parameters_dzoom);
+    gui_visca.setDefaultHeaderBackgroundColor(ofColor(255,0,0));
+    
+    
+    gui_visca.loadFromFile("visca_gui.xml");
+    
+    //-----serial
     serial.listDevices();
     vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
     
@@ -52,39 +110,8 @@ bool ofxVisca::connect(int _device){
     serialSendPause = 200;
     lastSendTime = ofGetElapsedTimeMillis();
     
-    parameters_menu.setName("menu");
-//    parameters_menu.add(menuON.set("menuON",false));
-//    parameters.add(bButton("bButton",true));
-//    all_viscaItems[0].bButton.addListener(this, &visca_item::buttonChange);
-
-    for(int i=0; i<all_viscaItems.size(); i++){
-        all_viscaItems[i].addToGui(parameters_menu);
-    }
-//    parameters_menu.add();
-//    parameters_menu.add(menuOFF.set("menuOFF",false));
-//    parameters_menu.add(menuBACK.set("menuBACK",false));
-//    parameters_menu.add(menuUP.set("menuUP",false));
-//    parameters_menu.add(menuDOWN.set("menuDOWN",false));
-//    parameters_menu.add(menuLEFT.set("menuLEFT",false));
-//    parameters_menu.add(menuRIGHT.set("menuRIGHT",false));
-    
-    parameters_lens.setName("lens");
-    parameters_lens.add(dnManual.set("dnManual",false));
-    parameters_lens.add(day.set("day",false));
-    parameters_lens.add(night.set("night",false));
-    
-    parameters_dzoom.setName("dZoom");
-    
-    gui_visca.setup();
-    gui_visca.setName("VISCA");
-    gui_visca.setPosition(0,0);
-    gui_visca.add(parameters_menu);
-    gui_visca.add(parameters_lens);
-    gui_visca.add(parameters_dzoom);
-    gui_visca.setDefaultHeaderBackgroundColor(ofColor(255,0,0));
 
 
-    gui_visca.loadFromFile("visca_gui.xml");
 }
 
 void ofxVisca::draw(int _x, int _y){
@@ -178,7 +205,7 @@ void ofxVisca::keyReleased(int key){
 //        addCommand(1,commands.day);
 //        ofLog()<<"day";
 //    }
-    
+
     if(key == '0'){
         addCommand(1,commands.dzoomON);
         ofLog()<<"dzoomON";
@@ -320,18 +347,18 @@ void ofxVisca::checkGui(){
 //        addCommand(1,commands.menuUP);
 //    }
 
-    if(dnManual){
-        dnManual = false;
-        addCommand(1,commands.dnManual);
-    }
-    if(day){
-        day = false;
-        addCommand(1,commands.day);
-    }
-    if(night){
-        night = false;
-        addCommand(1,commands.night);
-    }
+//    if(dnManual){
+//        dnManual = false;
+//        addCommand(1,commands.dnManual);
+//    }
+//    if(day){
+//        day = false;
+//        addCommand(1,commands.day);
+//    }
+//    if(night){
+//        night = false;
+//        addCommand(1,commands.night);
+//    }
 
 }
 
