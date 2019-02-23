@@ -12,16 +12,30 @@ class visca_item{
 public:
     vector<unsigned char> item_command;
     string item_name;
+    int bytePosA, bytePosB;
+    int sliderAmount;
+    int sliderType;
+    
     ofParameter<bool> bButton;
+    ofParameter<int> bByteSlider0;
+    ofParameter<int> bIntSlider0;
+    ofParameter<int> bIntSlider1;
+    
     bool useCommand;
     
-    void setup(string _name, ofParameterGroup & _group, vector<unsigned char> _command){
+    void setup(string _name, ofParameterGroup & _group, vector<unsigned char> _command,int _bytePosA = -1, int _bytePosB = -1, int _sliders = 0, int _sliderType = 0){
         item_name = _name;
         item_command = _command;
         
-        addToGui(_group);
-//        parameters.add(bButton("bButton",true));
-//        bButton.addListener(this, &visca_item::buttonChange);
+        bytePosA = _bytePosA;
+        bytePosB = _bytePosB;
+        
+        sliderAmount = _sliders;
+        sliderType = _sliderType;
+        
+        ofLog()<<"setup item "<<item_name;
+        
+        addToGui(_group, sliderAmount, sliderType);
     }
 //    vector<unsigned char> checkGui(){
 //        if(bButton){
@@ -33,17 +47,44 @@ public:
     void buttonChange(bool & _state){
         ofLogNotice() << "buttonChange "<< item_name<<" state " << _state;
         bButton = false;
-//        addCommand(1,commands.menuON)
         useCommand = true;
     }
-    
-    void addToGui(ofParameterGroup & _group){
-//        _group.add(bButton("bButton",true));
+    void sliderChange(int & _state){
+        ofLogNotice() << "sliderChange "<< item_name<<" state " << _state;
+        useCommand = true;
+    }
+   
+    void addToGui2(ofParameterGroup & _group, int _silderAmt = 0, int _type = 0){
+        ofLog()<<"addToGui item "<<item_name<<" sliderAmt "<<_silderAmt<<" _type "<<_type;
+
         _group.add(bButton.set(item_name,false));
-       bButton.addListener(this, &visca_item::buttonChange);
+        bButton.addListener(this, &visca_item::buttonChange);
+
+
+    }
+    
+    void addToGui(ofParameterGroup & _group, int _silderAmt = 0, int _type = 0){
+        
+        ofLog()<<"addToGui item "<<item_name<<" sliderAmt "<<_silderAmt<<" _type "<<_type;
+        
+        if(_silderAmt == 0){
+            _group.add(bButton.set(item_name,false));
+            bButton.addListener(this, &visca_item::buttonChange);
+        }else if(_silderAmt == 1){
+            if(_type == 1){
+                _group.add(bByteSlider0.set(item_name,0,0,255));
+                bByteSlider0.addListener(this, &visca_item::sliderChange);
+            }else if (_type == 2){
+                _group.add(bByteSlider0.set(item_name,0,0,65535));
+                bByteSlider0.addListener(this, &visca_item::sliderChange);
+            }
+        } else if(_silderAmt == 2){
+            
+        }
     }
     
 private:
+
     
 };
 
@@ -108,6 +149,14 @@ struct visca_commands {
     
     vector<unsigned char> dzoomDIRECT = {0x80, 0x01, 0x04, 0x46, 0x00, 0x00, 0x00, 0x00, 0xFF}; //pq: D-Zoom Position,  Enabled during Separate Mode
     
+    //------init
+    vector<unsigned char> camReset = {0x80, 0x01, 0x04, 0x19, 0x03, 0xFF};
+    vector<unsigned char> lensInit = {0x80, 0x01, 0x04, 0x19, 0x01, 0xFF};
+
+    vector<unsigned char> flipOn = {0x80, 0x01, 0x04, 0x66, 0x02, 0xFF};
+    vector<unsigned char> flipOff = {0x80, 0x01, 0x04, 0x66, 0x03, 0xFF};
+    vector<unsigned char> mirrorOn = {0x80, 0x01, 0x04, 0x61, 0x02, 0xFF};
+    vector<unsigned char> mirrorOff = {0x80, 0x01, 0x04, 0x61, 0x03, 0xFF};
     
     //-----does not work on CV345-CS, CV380-CS
     vector<unsigned char> powerON = {0x80, 0x01, 0x04, 0x00, 0x02, 0xFF};  //8x 01 04 00 02 FF
@@ -161,4 +210,8 @@ private:
     void serialSending();
     void getSerialDevice();
     void checkGui();
+    
+    vector<unsigned char> intToBytes(int paramInt);
+    
+   
 };

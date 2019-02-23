@@ -58,8 +58,19 @@ bool ofxVisca::connect(int _device){
     all_viscaItems[i++].setup("wbOutdoor",parameters_wb,commands.wbOutdoor);
     all_viscaItems[i++].setup("wbOnePush",parameters_wb,commands.wbOnePush);
     all_viscaItems[i++].setup("wbATW",parameters_wb,commands.wbATW);
-    all_viscaItems[i++].setup("wbManual",parameters_wb,commands.wbManual);
     all_viscaItems[i++].setup("wbOnePushTrig",parameters_wb,commands.wbOnePushTrig);
+    all_viscaItems[i++].setup("wbManual",parameters_wb,commands.wbManual);
+
+    all_viscaItems[i++].setup("wbRGain_Reset",parameters_wb,commands.wbRGain_Reset);
+    all_viscaItems[i++].setup("wbRGain_Up",parameters_wb,commands.wbRGain_Up);
+    all_viscaItems[i++].setup("wbRGain_Down",parameters_wb,commands.wbRGain_Down);
+    all_viscaItems[i++].setup("wbRGain_Direct",parameters_wb,commands.wbRGain_Direct,6,7,1,2); // byte pos A, pos B, silder amt, silder type byte or int
+
+//    all_viscaItems[i++].setup("wbBGain_Reset",parameters_wb,commands.wbBGain_Reset);
+//    all_viscaItems[i++].setup("wbBGain_Up",parameters_wb,commands.wbBGain_Up);
+//    all_viscaItems[i++].setup("wbBGain_Down",parameters_wb,commands.wbBGain_Down);
+//    all_viscaItems[i++].setup("wbBGain_Direct",parameters_wb,commands.wbBGain_Direct,1,2);
+
     
     //------cam digital zoom    
     all_viscaItems[i++].setup("dzoomON",parameters_dzoom,commands.dzoomON);
@@ -125,7 +136,21 @@ void ofxVisca::update(){
     for(int i=0; i<all_viscaItems.size(); i++){
         if( all_viscaItems[i].useCommand == true){
             all_viscaItems[i].useCommand = false;
-            addCommand(1, all_viscaItems[i].item_command);
+            
+            if(all_viscaItems[i].sliderAmount == -1){
+                addCommand(1, all_viscaItems[i].item_command);
+            }else{
+                int val = all_viscaItems[i].bByteSlider0.get();
+                vector<unsigned char> allBytes = intToBytes(val);
+                ofLog()<<"allBytes[0] "<<int(allBytes[0])<<"allBytes[1] "<<int(allBytes[1])<<"allBytes[2] "<<int(allBytes[2])<<"allBytes[3] "<<int(allBytes[3]);
+               int valA = int(allBytes[3]);
+                int valB = int(allBytes[2]);
+                
+                ofLog()<<"new slider value from "<<all_viscaItems[i].item_name<<" val "<<val<<" valA "<<valA<<" valB "<<valB;
+                ofLog()<<"all_viscaItems[i].bytePosA "<<all_viscaItems[i].bytePosA<<" all_viscaItems[i].bytePosB "<<all_viscaItems[i].bytePosB;
+                
+                addCommand(1, all_viscaItems[i].item_command, all_viscaItems[i].bytePosA, valA ,all_viscaItems[i].bytePosB, valB);
+            }
         }
     }
     /*
@@ -142,6 +167,7 @@ void ofxVisca::update(){
 }
 
 void ofxVisca::addCommand(int _camID, vector<unsigned char> _command){
+    //this is the command and only adds the camera ID
     
     ofLog()<<"first byte as hex "<<ofToHex(_command[0]);
     
@@ -156,14 +182,23 @@ void ofxVisca::addCommand(int _camID, vector<unsigned char> _command){
 
 void ofxVisca::addCommand(int _camID, vector<unsigned char> _command, int _bytePosA, int _valueA, int _bytePosB, int _valueB){
     
-    ofLog()<<"byte# "<<ofToString(_bytePosA)<<" as hex "<<ofToHex(_command[_bytePosA]);
+    ofLog()<<"byteA# "<<ofToString(_bytePosA)<<" as hex "<<ofToHex(_command[_bytePosA]);
+    ofLog()<<"byteB# "<<ofToString(_bytePosB)<<" as hex "<<ofToHex(_command[_bytePosB]);
+
+    //_command[_bytePosA] is the default value for this command. probably 0x00
     
-    int temp_id = int(_command[_bytePosA]) + _valueA;
-    ofLog()<<"byte# "<<ofToString(_bytePosA)<<" as int "<<int(_command[_bytePosA])<<" +1 "<<temp_id;
-    
-    _command[_bytePosA] = (unsigned char) temp_id;
-    ofLog()<<"new byte as hex "<<ofToHex(_command[_bytePosA]);
-    
+    //we construct the new value. 
+    int temp_id_A = int(_command[_bytePosA]) + _valueA;
+    ofLog()<<"byte# "<<ofToString(_bytePosA)<<" as int "<<int(_command[_bytePosA])<<" +1 "<<temp_id_A;
+
+    //since default is 0x00 it's like setting it to the new value
+    _command[_bytePosA] = (unsigned char) temp_id_A;
+    ofLog()<<"new byteA as hex "<<ofToHex(_command[_bytePosA]);
+  
+    int temp_id_B = int(_command[_bytePosB]) + _valueB;
+    _command[_bytePosB] = (unsigned char) temp_id_B;
+    ofLog()<<"new byteB as hex "<<ofToHex(_command[_bytePosB]);
+
     //    serialMessages.push_back(_command);
     addCommand(_camID,_command);
 }
@@ -284,6 +319,14 @@ void ofxVisca::getSerialDevice(){
         }
     }
     
+}
+
+vector<unsigned char> ofxVisca::intToBytes(int paramInt)
+{
+    vector<unsigned char> arrayOfByte(4);
+    for (int i = 0; i < 4; i++)
+        arrayOfByte[3 - i] = (paramInt >> (i * 8));
+    return arrayOfByte;
 }
 
 void ofxVisca::checkGui(){
