@@ -78,7 +78,7 @@ void ofApp::draw(){
     
     visca_object.draw(10,100);
     if(bShowGui){
-        visca_object.gui_visca.draw();
+//        visca_object.gui_visca.draw();
     }
 }
 

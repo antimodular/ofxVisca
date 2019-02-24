@@ -106,8 +106,23 @@ bool ofxVisca::connect(int _device){
     serialSendPause = 200;
     lastSendTime = ofGetElapsedTimeMillis();
     
+//    vector<unsigned char> _command
+    buttonGroup.resize(7); 
+    int mX = 300;
+    int mY = 300;
+    int mW = 100;
+    int mH = 50;
+    buttonGroup[0].setup("MenuOn",1,{commands.menuON},10, 60 , mW, mH);
+    buttonGroup[1].setup("MenuOff",1,{commands.menuOFF},10, 120, mW, mH);
+    buttonGroup[2].setup("MenuBack",1,{commands.menuBACK},10, 180, mW, mH);
     
-    
+     buttonGroup[3].setup("MenuUp",1,{commands.menuUP},200, 60, mW, mH);
+    buttonGroup[4].setup("MenuDown",1,{commands.menuDOWN},200, 180, mW, mH);
+   
+    buttonGroup[5].setup("MenuLeft",1,{commands.menuLEFT},150, 120, mW, mH);
+    buttonGroup[6].setup("MenuRight",1,{commands.menuRIGHT}, 260, 120, mW, mH);
+
+////    buttonGroup[1].setup("Down",300, 360, 100, 50); 
 }
 
 void ofxVisca::draw(int _x, int _y){
@@ -133,6 +148,17 @@ void ofxVisca::update(){
         serialSending();
     }  
     
+    //      for(int i=0; i<buttonGroup.size(); i++){
+    for(auto & button: buttonGroup){
+        if(button.bUseCommand == true){
+            button.bUseCommand = false;
+            for(int i=0; i<button.commands.size(); i++){
+                addCommand(button.camID, button.commands[i]);
+            }
+        }
+    }
+    
+    /*
     for(int i=0; i<all_viscaItems.size(); i++){
         if( all_viscaItems[i].useCommand == true){
             all_viscaItems[i].useCommand = false;
@@ -153,6 +179,7 @@ void ofxVisca::update(){
             }
         }
     }
+     */
     /*
      int myByte = serial.readByte();
      
@@ -205,27 +232,12 @@ void ofxVisca::addCommand(int _camID, vector<unsigned char> _command, int _byteP
 
 void ofxVisca::keyReleased(int key){ 
     
-    //    if(key == 'm'){
-    //        addCommand(1,commands.menuON);
-    //        ofLog()<<"menuON";
-    //    }
-    //    if(key == 'n'){
-    //        addCommand(1,commands.menuOFF);
-    //        ofLog()<<"menuOFF";
-    //    }
-    //    if(key == '1'){
-    //        addCommand(1,commands.dnManual);
-    //        ofLog()<<"dnManual";
-    //    }
-    //    if(key == '2'){
-    //        addCommand(1,commands.night);
-    //        ofLog()<<"night";
-    //    }
-    //    if(key == '3'){
-    //        addCommand(1,commands.day);
-    //        ofLog()<<"day";
-    //    }
-    
+    if(key =='e'){
+         for(auto & button: buttonGroup){
+        button.bEditMode = !button.bEditMode;
+         }
+    }
+ 
     if(key == '0'){
         addCommand(1,commands.dzoomON);
         ofLog()<<"dzoomON";
