@@ -89,6 +89,14 @@ bool ofxVisca::connect(int _device){
     
     gui_visca.loadFromFile("visca_gui.xml");
     
+    if(ofFile::doesFileExist("visca_GuiSettings.xml") == false){
+        XML.saveFile("visca_GuiSettings.xml");
+    }
+    XML.loadFile("visca_GuiSettings.xml");
+    
+    myBaud = XML.getValue("SERIAL:BAUD", 9600);
+    ofLog()<<"myBaud "<<myBaud;
+    
     //-----serial
     serial.listDevices();
     vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
@@ -101,7 +109,7 @@ bool ofxVisca::connect(int _device){
     }else{
         serialID = _device;
     }
-    myBaud = 9600; //57600; //115200;
+//    myBaud = 9600; //57600; //115200;
     serialActive = serial.setup(serialID,myBaud);
     serialSendPause = 200;
     lastSendTime = ofGetElapsedTimeMillis();

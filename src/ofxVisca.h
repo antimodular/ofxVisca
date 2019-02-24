@@ -4,6 +4,8 @@
 
 #include "ofMain.h"
 
+#include "ofxXmlSettings.h"
+
 #include <ofSerial.h> 
 #include "ofxGui.h"
 #include "viscaButton.h"
@@ -26,6 +28,7 @@ public:
     ofParameter<int> bIntSlider1;
     
     bool useCommand;
+    
     
     void setup(string _name, ofParameterGroup & _group, vector<unsigned char> _command,int _bytePosA = -1, int _bytePosB = -1, int _sliders = 0, int _sliderType = 0){
         item_name = _name;
@@ -129,6 +132,9 @@ public:
     vector<viscaButton> buttonGroup;
 
 private:	
+    
+    ofxXmlSettings XML;
+    
     ofSerial serial;
     bool serialActive;
     int myBaud;
