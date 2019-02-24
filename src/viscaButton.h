@@ -34,11 +34,20 @@ public:
             ofRemoveListener(ofEvents().mouseMoved, this, &viscaButton::mouseMoved);
             ofRemoveListener(ofEvents().mousePressed, this, &viscaButton::mousePressed);
             ofRemoveListener(ofEvents().mouseReleased, this, &viscaButton::mouseReleased);
-                        ofRemoveListener(ofEvents().mouseDragged, this, &viscaButton::mouseDragged);
+            ofRemoveListener(ofEvents().mouseDragged, this, &viscaButton::mouseDragged);
         }
         bWasSetup = false;
     }
-    
+    void enable(){
+        if(!bWasSetup){
+            ofAddListener(ofEvents().draw, this, &viscaButton::draw);
+            ofAddListener(ofEvents().mouseMoved, this, &viscaButton::mouseMoved);
+            ofAddListener(ofEvents().mousePressed, this, &viscaButton::mousePressed);
+            ofAddListener(ofEvents().mouseReleased, this, &viscaButton::mouseReleased);
+            ofAddListener(ofEvents().mouseDragged, this, &viscaButton::mouseDragged);
+            bWasSetup = true;
+        }
+    }
     void setup(string _label,int _camID, vector<vector<unsigned char>> _commands, ofxXmlSettings & XML){
         
         labelString = _label; 
@@ -76,13 +85,14 @@ public:
 
         commands = _commands;
         
-        if(!bWasSetup){
-            ofAddListener(ofEvents().draw, this, &viscaButton::draw);
-            ofAddListener(ofEvents().mouseMoved, this, &viscaButton::mouseMoved);
-            ofAddListener(ofEvents().mousePressed, this, &viscaButton::mousePressed);
-            ofAddListener(ofEvents().mouseReleased, this, &viscaButton::mouseReleased);
-                        ofAddListener(ofEvents().mouseDragged, this, &viscaButton::mouseDragged);
-            bWasSetup = true;
+        enable();
+    }
+    
+    void showButton(bool _show){
+        if(_show == true){
+            enable();
+        }else{
+            clear();
         }
     }
     

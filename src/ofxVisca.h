@@ -112,16 +112,19 @@ public:
     
     void addCommand(int _camID, vector<unsigned char> _command);
     void addCommand(int _camID, vector<unsigned char> _command, int _bytePosA, int _valueA, int _bytePosB = -1, int _valueB = -1);
-
+    
     
     visca_commands commands;
     
     vector<viscaButton> buttonGroup;
-
+    
+    bool bShowGui;
+    bool bEditMode;
 private:	
     
     ofxXmlSettings XML;
-    bool bEditMode;
+    
+    
     
     ofSerial serial;
     bool serialActive;

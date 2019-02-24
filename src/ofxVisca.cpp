@@ -99,6 +99,10 @@ bool ofxVisca::connect(int _device){
     
     bEditMode = false;
     
+    bShowGui = true;
+    for(auto & button: buttonGroup){
+        button.showButton(bShowGui);
+    }
 }
 
 
@@ -201,10 +205,16 @@ void ofxVisca::addCommand(int _camID, vector<unsigned char> _command, int _byteP
 
 void ofxVisca::keyReleased(int key){ 
     
+    if(key =='g'){
+        bShowGui = !bShowGui;
+        for(auto & button: buttonGroup){
+            button.showButton(bShowGui);
+        }
+    }
     if(key =='e'){
         
         bEditMode = !bEditMode;
-
+        
         if(bEditMode == false){
             for(auto & button: buttonGroup){
                 button.bEditMode = false;
