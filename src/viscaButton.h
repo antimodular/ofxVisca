@@ -3,7 +3,7 @@
 //  example_ofxVisca
 //
 //  Created by Stephan Schulz on 2019-02-23.
-//
+//  inspired by noise1dOctaveExample gui
 
 #ifndef viscaButton_h
 #define viscaButton_h
@@ -161,6 +161,7 @@ public:
         if(bEditMode && bSetPositon){
             int multiple = 10;
             
+            //snap to grid
             x = (int(event.x) / multiple) * multiple;
             y = (int(event.y) / multiple) * multiple;
                        

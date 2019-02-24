@@ -107,37 +107,47 @@ bool ofxVisca::connect(int _device){
     lastSendTime = ofGetElapsedTimeMillis();
     
 //    vector<unsigned char> _command
-    buttonGroup.resize(7); 
+    buttonGroup.resize(25); 
     int mX = 300;
     int mY = 300;
     int mW = 100;
     int mH = 50;
-    buttonGroup[0].setup("MenuOn",1,{commands.menuON},10, 60 , mW, mH);
-    buttonGroup[1].setup("MenuOff",1,{commands.menuOFF},10, 120, mW, mH);
-    buttonGroup[2].setup("MenuBack",1,{commands.menuBACK},10, 180, mW, mH);
+    int m = 0;
+    buttonGroup[m++].setup("MenuOn",1,{commands.menuON},10, 60 , mW, mH);
+    buttonGroup[m++].setup("MenuOff",1,{commands.menuOFF},10, 120, mW, mH);
+    buttonGroup[m++].setup("MenuBack",1,{commands.menuBACK},10, 180, mW, mH);
     
-     buttonGroup[3].setup("MenuUp",1,{commands.menuUP},200, 60, mW, mH);
-    buttonGroup[4].setup("MenuDown",1,{commands.menuDOWN},200, 180, mW, mH);
+    buttonGroup[m++].setup("MenuUp",1,{commands.menuUP},200, 60, mW, mH);
+    buttonGroup[m++].setup("MenuDown",1,{commands.menuDOWN},200, 180, mW, mH);
    
-    buttonGroup[5].setup("MenuLeft",1,{commands.menuLEFT},150, 120, mW, mH);
-    buttonGroup[6].setup("MenuRight",1,{commands.menuRIGHT}, 260, 120, mW, mH);
+    buttonGroup[m++].setup("MenuLeft",1,{commands.menuLEFT},150, 120, mW, mH);
+    buttonGroup[m++].setup("MenuRight",1,{commands.menuRIGHT}, 260, 120, mW, mH);
 
-////    buttonGroup[1].setup("Down",300, 360, 100, 50); 
+    buttonGroup[m++].setup("camReset",1,{commands.camReset},10, 840, mW, mH);
+    buttonGroup[m++].setup("lensInit",1,{commands.lensInit},120, 840, mW, mH);
+    buttonGroup[m++].setup("saveCustom",1,{commands.saveCustom},510, 270, mW, mH);
+    
+    buttonGroup[m++].setup("flipOn",1,{commands.flipOn},400, 60, mW, mH);
+    buttonGroup[m++].setup("flipOff",1,{commands.flipOff},400, 120, mW, mH);
+    buttonGroup[m++].setup("mirrorOn",1,{commands.mirrorOn},510, 60, mW, mH);
+    buttonGroup[m++].setup("mirrorOff",1,{commands.mirrorOff},510, 120, mW, mH);
+    
+    buttonGroup[m++].setup("redDown",1,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom},120, 320, mW, mH); 
+    buttonGroup[m++].setup("redUp",1,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom},120, 370, mW, mH); 
+    buttonGroup[m++].setup("blueDown",1,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom},120, 420, mW, mH); 
+    buttonGroup[m++].setup("blueUp",1,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom},120, 470, mW, mH); 
+    
+    int temp_x = 0; //temp_x+=100
+    buttonGroup[m++].setup("wbAuto",1,{commands.wbAuto},10, 270, mW, mH);
+    buttonGroup[m++].setup("wbIndoor",1,{commands.wbIndoor},10, 320, mW, mH);
+    buttonGroup[m++].setup("wbOutdoor",1,{commands.wbOutdoor},10, 370, mW, mH);
+    buttonGroup[m++].setup("wbOnePush",1,{commands.wbOnePush},10, 420, mW, mH);
+    buttonGroup[m++].setup("wbATW",1,{commands.wbATW},10, 470, mW, mH);
+    buttonGroup[m++].setup("wbPushTrig",1,{commands.wbOnePushTrig},10, 520, mW, mH);
+    buttonGroup[m++].setup("wbManual",1,{commands.wbManual},120, 270, mW, mH);
+    
 }
 
-void ofxVisca::draw(int _x, int _y){
-    //    ofPushMatrix();
-    //    ofTranslate(_x, _y);
-    //    int temp_y = 0;
-    //    ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
-    //    ofDrawBitmapString("key n | hide menu", 0, temp_y+=15);
-    //    ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
-    //    ofDrawBitmapString("key 2 | IR pass filter", 0, temp_y+=15);
-    //    ofDrawBitmapString("key 3 | IR cut filter", 0, temp_y+=15);
-    //    ofPopMatrix();
-    
-    
-}
 
 void ofxVisca::update(){
     
@@ -191,6 +201,41 @@ void ofxVisca::update(){
      printf("myByte is %d", myByte);
      }
      */
+}
+
+void ofxVisca::draw(int _x, int _y){
+    //    ofPushMatrix();
+    //    ofTranslate(_x, _y);
+    //    int temp_y = 0;
+    //    ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
+    //    ofDrawBitmapString("key n | hide menu", 0, temp_y+=15);
+    //    ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
+    //    ofDrawBitmapString("key 2 | IR pass filter", 0, temp_y+=15);
+    //    ofDrawBitmapString("key 3 | IR cut filter", 0, temp_y+=15);
+    //    ofPopMatrix();
+    
+    // draw recent unrecognized messages
+    
+    if(serialID == ""){
+        ofDrawBitmapStringHighlight("serial device not found", 10, 15);
+    }else{
+        ofDrawBitmapStringHighlight("serialID: "+serialID + " at baud rate "+ofToString(myBaud), 10, 15);
+    }
+    
+    ofPushMatrix();
+    ofTranslate(ofGetWidth() - 250, 15);
+    ofDrawBitmapStringHighlight("recent serial messages", 0, 0);
+    for(int i = 0; i < NUM_MSG_STRINGS; i++){
+        ofDrawBitmapStringHighlight(msgStrings[i], 0, 40 + 15 * i);
+    }
+    ofPopMatrix();
+       
+    // hide old messages
+    for(int i = 0; i < NUM_MSG_STRINGS; i++){
+        if(timers[i] < ofGetElapsedTimef()){
+            msgStrings[i] = "";
+        }
+    }
 }
 
 void ofxVisca::addCommand(int _camID, vector<unsigned char> _command){
@@ -280,10 +325,15 @@ void ofxVisca::serialSending(){
     if(serialMessages.size() > 0){        
         //        unsigned char* sendCmd = (unsigned char*)  serialMessages[0].c_str();
         
+        string msgString;
         unsigned char* sendCmd = &serialMessages[0][0];
         cout<<"serialMessages[0]: ";
         for(int i=0; i<serialMessages[0].size();i++){
             cout<<ofToHex(serialMessages[0][i])<<" , ";
+
+            if(i != 0 )msgString += " , ";
+            msgString += ofToHex(serialMessages[0][i]);
+           
         }
         cout<<endl;
 
@@ -307,6 +357,13 @@ void ofxVisca::serialSending(){
         //        serialMessages.erase(serialMessages.begin());
         serialMessages.erase(serialMessages.begin());
         
+        // add to the list of strings to display
+        msgStrings[currentMsgString] = msgString;
+        timers[currentMsgString] = ofGetElapsedTimef() + 5.0f;
+        currentMsgString = (currentMsgString + 1) % NUM_MSG_STRINGS;
+        
+        // clear the next line
+        msgStrings[currentMsgString] = "";
     }
     
 }

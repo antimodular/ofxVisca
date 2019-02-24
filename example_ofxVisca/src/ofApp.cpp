@@ -59,8 +59,8 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    ofDrawBitmapStringHighlight("ofxVisca example", 10,10);
-    ofDrawBitmapStringHighlight("fps "+ofToString(ofGetFrameRate()), 10,30);
+//    ofDrawBitmapStringHighlight("ofxVisca example", 10,10);
+//    ofDrawBitmapStringHighlight("fps "+ofToString(ofGetFrameRate()), 10,30);
     //    if (ncharsRead > 0 && ((ofGetElapsedTimef() - readTime) < 0.5f)){
     //        ofSetColor(0);
     //    } else {

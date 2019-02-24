@@ -9,6 +9,8 @@
 #include "viscaButton.h"
 #include "viscaCommands.h"
 
+#define NUM_MSG_STRINGS 10
+
 class visca_item{
     
 public:
@@ -144,5 +146,7 @@ private:
     
     vector<unsigned char> intToBytes(int paramInt);
     
-   
+    int currentMsgString;
+    string msgStrings[NUM_MSG_STRINGS];
+    float timers[NUM_MSG_STRINGS];
 };
