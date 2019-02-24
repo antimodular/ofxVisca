@@ -39,7 +39,26 @@ public:
         bWasSetup = false;
     }
     
+    void setup(string _label,int _camID, vector<vector<unsigned char>> _commands, ofxXmlSettings & XML){
+        
+        labelString = _label; 
+        
+//        if(!XML.tagExists("BUTTONS:"+labelString+":x")){
+//            ofLog()<<"XML BUTTONS does not exists";
+//        }
+        
+        x = XML.getValue("BUTTONS:"+labelString+":x", ofRandom(ofGetWidth()-200));
+        y = XML.getValue("BUTTONS:"+labelString+":y", ofRandom(ofGetWidth()-200));
+        width = XML.getValue("BUTTONS:"+labelString+":w", 100);
+        height = XML.getValue("BUTTONS:"+labelString+":h", 50);
+        
+        setup(_label, _camID, _commands, x,y,width,height);
+    }
+
     void setup(string _label,int _camID, vector<vector<unsigned char>> _commands, float _x, float _y, float _w, float _h){
+        
+        labelString = _label; 
+        
         x = _x;
         y = _y;
         width = _w;
@@ -54,9 +73,7 @@ public:
         bSetPositon = false;
         
         box.set(x,y, width, height); 
-        
-        labelString = _label; 
-        
+
         commands = _commands;
         
         if(!bWasSetup){
@@ -183,6 +200,31 @@ public:
     vector<vector<unsigned char>> getCommands(){
         return commands;
     }
+    
+    int getX(){
+        return x;
+    }
+    int getY(){
+        return y;
+    }
+    int getWidth(){
+        return width;
+    }
+    int getHeight(){
+        return height;
+    }
+    
+    void saveButton(ofxXmlSettings & XML){
+        XML.setValue("BUTTONS:"+labelString+":x", x);
+        XML.setValue("BUTTONS:"+labelString+":y", y);
+        XML.setValue("BUTTONS:"+labelString+":width", width);
+        XML.setValue("BUTTONS:"+labelString+":height", height);
+//        if(!xml.tagExists(name))
+//            xml.addValue(name,value);
+//        else
+//            xml.setValue(name,value);
+        
+    }
 protected:
     
     float    x;
@@ -202,5 +244,6 @@ private:
     
     bool    bWasSetup;
     
+//     ofxXmlSettings XML;
 };
 #endif /* viscaButton_h */

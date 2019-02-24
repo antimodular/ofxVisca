@@ -26,75 +26,17 @@ ofxVisca::~ofxVisca(){
 
 bool ofxVisca::connect(int _device){
     
-    parameters_menu.setName("menu");
-    parameters_lens.setName("lens");
-    parameters_wb.setName("whiteBalance");
-    parameters_dzoom.setName("dZoom");
-    
-    //    all_viscaItems.push_back(visca_item());
-    //all_viscaItems.emplace_back(make_shared<visca_item>());
-    all_viscaItems.resize(23);
-    //  all_viscaItems.emplace_back(visca_item());
-    //     all_viscaItems.push_back(visca_item());
-
-    //------cam menu
-    int i = 0;
-    all_viscaItems[i++].setup("menuON",parameters_menu,commands.menuON);
-    all_viscaItems[i++].setup("menuOFF",parameters_menu,commands.menuOFF);
-    all_viscaItems[i++].setup("menuBACK",parameters_menu,commands.menuBACK);
-    all_viscaItems[i++].setup("menuUP",parameters_menu,commands.menuUP);
-    all_viscaItems[i++].setup("menuDOWN",parameters_menu,commands.menuDOWN);
-    all_viscaItems[i++].setup("menuLEFT",parameters_menu,commands.menuLEFT);
-    all_viscaItems[i++].setup("menuRIGHT",parameters_menu,commands.menuRIGHT);
-    
-    //----cam lens
-    all_viscaItems[i++].setup("dnManual",parameters_lens,commands.dnManual);
-    all_viscaItems[i++].setup("day",parameters_lens,commands.day);
-    all_viscaItems[i++].setup("night",parameters_lens,commands.night);
-    
-    //------cam white balance
-    all_viscaItems[i++].setup("wbAuto",parameters_wb,commands.wbAuto);
-    all_viscaItems[i++].setup("wbIndoor",parameters_wb,commands.wbIndoor);
-    all_viscaItems[i++].setup("wbOutdoor",parameters_wb,commands.wbOutdoor);
-    all_viscaItems[i++].setup("wbOnePush",parameters_wb,commands.wbOnePush);
-    all_viscaItems[i++].setup("wbATW",parameters_wb,commands.wbATW);
-    all_viscaItems[i++].setup("wbOnePushTrig",parameters_wb,commands.wbOnePushTrig);
-    all_viscaItems[i++].setup("wbManual",parameters_wb,commands.wbManual);
-
-    all_viscaItems[i++].setup("wbRGain_Reset",parameters_wb,commands.wbRGain_Reset);
-    all_viscaItems[i++].setup("wbRGain_Up",parameters_wb,commands.wbRGain_Up);
-    all_viscaItems[i++].setup("wbRGain_Down",parameters_wb,commands.wbRGain_Down);
-    all_viscaItems[i++].setup("wbRGain_Direct",parameters_wb,commands.wbRGain_Direct,6,7,1,2); // byte pos A, pos B, silder amt, silder type byte or int
-
-//    all_viscaItems[i++].setup("wbBGain_Reset",parameters_wb,commands.wbBGain_Reset);
-//    all_viscaItems[i++].setup("wbBGain_Up",parameters_wb,commands.wbBGain_Up);
-//    all_viscaItems[i++].setup("wbBGain_Down",parameters_wb,commands.wbBGain_Down);
-//    all_viscaItems[i++].setup("wbBGain_Direct",parameters_wb,commands.wbBGain_Direct,1,2);
-
-    
-    //------cam digital zoom    
-    all_viscaItems[i++].setup("dzoomON",parameters_dzoom,commands.dzoomON);
-    all_viscaItems[i++].setup("dzoomOFF",parameters_dzoom,commands.dzoomOFF);
-    
-    
-    gui_visca.setup();
-    gui_visca.setName("VISCA");
-    gui_visca.setPosition(0,0);
-    gui_visca.add(parameters_menu);
-    gui_visca.add(parameters_lens);
-    gui_visca.add(parameters_wb);
-    gui_visca.add(parameters_dzoom);
-    gui_visca.setDefaultHeaderBackgroundColor(ofColor(255,0,0));
-    
-    
-    gui_visca.loadFromFile("visca_gui.xml");
-    
     if(ofFile::doesFileExist("visca_GuiSettings.xml") == false){
         XML.saveFile("visca_GuiSettings.xml");
     }
     XML.loadFile("visca_GuiSettings.xml");
     
-    myBaud = XML.getValue("SERIAL:BAUD", 9600);
+    if(!XML.tagExists("SERIAL:BAUD")){
+        ofLog()<<"XML SERIAL:BAUD does not exists";
+        XML.addValue("SERIAL:BAUD",9600);
+    }
+    myBaud = XML.getValue("SERIAL:BAUD",9600);
+  
     ofLog()<<"myBaud "<<myBaud;
     
     //-----serial
@@ -121,38 +63,41 @@ bool ofxVisca::connect(int _device){
     int mW = 100;
     int mH = 50;
     int m = 0;
-    buttonGroup[m++].setup("MenuOn",1,{commands.menuON},10, 60 , mW, mH);
-    buttonGroup[m++].setup("MenuOff",1,{commands.menuOFF},10, 120, mW, mH);
-    buttonGroup[m++].setup("MenuBack",1,{commands.menuBACK},10, 180, mW, mH);
+//    buttonGroup[m++].setup("MenuOn",1,{commands.menuON},10, 60 , mW, mH);
+    buttonGroup[m++].setup("MenuOn",1,{commands.menuON},XML);
+    buttonGroup[m++].setup("MenuOff",1,{commands.menuOFF},XML);
+    buttonGroup[m++].setup("MenuBack",1,{commands.menuBACK},XML);
     
-    buttonGroup[m++].setup("MenuUp",1,{commands.menuUP},200, 60, mW, mH);
-    buttonGroup[m++].setup("MenuDown",1,{commands.menuDOWN},200, 180, mW, mH);
+    buttonGroup[m++].setup("MenuUp",1,{commands.menuUP},XML);
+    buttonGroup[m++].setup("MenuDown",1,{commands.menuDOWN},XML);
    
-    buttonGroup[m++].setup("MenuLeft",1,{commands.menuLEFT},150, 120, mW, mH);
-    buttonGroup[m++].setup("MenuRight",1,{commands.menuRIGHT}, 260, 120, mW, mH);
+    buttonGroup[m++].setup("MenuLeft",1,{commands.menuLEFT},XML);
+    buttonGroup[m++].setup("MenuRight",1,{commands.menuRIGHT},XML);
 
-    buttonGroup[m++].setup("camReset",1,{commands.camReset},10, 840, mW, mH);
-    buttonGroup[m++].setup("lensInit",1,{commands.lensInit},120, 840, mW, mH);
-    buttonGroup[m++].setup("saveCustom",1,{commands.saveCustom},510, 270, mW, mH);
+    buttonGroup[m++].setup("camReset",1,{commands.camReset},XML);
+    buttonGroup[m++].setup("lensInit",1,{commands.lensInit},XML);
+    buttonGroup[m++].setup("saveCustom",1,{commands.saveCustom},XML);
     
-    buttonGroup[m++].setup("flipOn",1,{commands.flipOn},400, 60, mW, mH);
-    buttonGroup[m++].setup("flipOff",1,{commands.flipOff},400, 120, mW, mH);
-    buttonGroup[m++].setup("mirrorOn",1,{commands.mirrorOn},510, 60, mW, mH);
-    buttonGroup[m++].setup("mirrorOff",1,{commands.mirrorOff},510, 120, mW, mH);
+    buttonGroup[m++].setup("flipOn",1,{commands.flipOn},XML);
+    buttonGroup[m++].setup("flipOff",1,{commands.flipOff},XML);
+    buttonGroup[m++].setup("mirrorOn",1,{commands.mirrorOn},XML);
+    buttonGroup[m++].setup("mirrorOff",1,{commands.mirrorOff},XML);
     
-    buttonGroup[m++].setup("redDown",1,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom},120, 320, mW, mH); 
-    buttonGroup[m++].setup("redUp",1,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom},120, 370, mW, mH); 
-    buttonGroup[m++].setup("blueDown",1,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom},120, 420, mW, mH); 
-    buttonGroup[m++].setup("blueUp",1,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom},120, 470, mW, mH); 
+    buttonGroup[m++].setup("redDown",1,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom},XML);
+    buttonGroup[m++].setup("redUp",1,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom},XML); 
+    buttonGroup[m++].setup("blueDown",1,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom},XML);
+    buttonGroup[m++].setup("blueUp",1,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom},XML);
     
     int temp_x = 0; //temp_x+=100
-    buttonGroup[m++].setup("wbAuto",1,{commands.wbAuto},10, 270, mW, mH);
-    buttonGroup[m++].setup("wbIndoor",1,{commands.wbIndoor},10, 320, mW, mH);
-    buttonGroup[m++].setup("wbOutdoor",1,{commands.wbOutdoor},10, 370, mW, mH);
-    buttonGroup[m++].setup("wbOnePush",1,{commands.wbOnePush},10, 420, mW, mH);
-    buttonGroup[m++].setup("wbATW",1,{commands.wbATW},10, 470, mW, mH);
-    buttonGroup[m++].setup("wbPushTrig",1,{commands.wbOnePushTrig},10, 520, mW, mH);
-    buttonGroup[m++].setup("wbManual",1,{commands.wbManual},120, 270, mW, mH);
+    buttonGroup[m++].setup("wbAuto",1,{commands.wbAuto},XML);
+    buttonGroup[m++].setup("wbIndoor",1,{commands.wbIndoor},XML);
+    buttonGroup[m++].setup("wbOutdoor",1,{commands.wbOutdoor},XML);
+    buttonGroup[m++].setup("wbOnePush",1,{commands.wbOnePush},XML);
+    buttonGroup[m++].setup("wbATW",1,{commands.wbATW},XML);
+    buttonGroup[m++].setup("wbPushTrig",1,{commands.wbOnePushTrig},XML);
+    buttonGroup[m++].setup("wbManual",1,{commands.wbManual},XML);
+    
+    bEditMode = false;
     
 }
 
@@ -176,28 +121,7 @@ void ofxVisca::update(){
         }
     }
     
-    /*
-    for(int i=0; i<all_viscaItems.size(); i++){
-        if( all_viscaItems[i].useCommand == true){
-            all_viscaItems[i].useCommand = false;
-            
-            if(all_viscaItems[i].sliderAmount == -1){
-                addCommand(1, all_viscaItems[i].item_command);
-            }else{
-                int val = all_viscaItems[i].bByteSlider0.get();
-                vector<unsigned char> allBytes = intToBytes(val);
-                ofLog()<<"allBytes[0] "<<int(allBytes[0])<<"allBytes[1] "<<int(allBytes[1])<<"allBytes[2] "<<int(allBytes[2])<<"allBytes[3] "<<int(allBytes[3]);
-               int valA = int(allBytes[3]);
-                int valB = int(allBytes[2]);
-                
-                ofLog()<<"new slider value from "<<all_viscaItems[i].item_name<<" val "<<val<<" valA "<<valA<<" valB "<<valB;
-                ofLog()<<"all_viscaItems[i].bytePosA "<<all_viscaItems[i].bytePosA<<" all_viscaItems[i].bytePosB "<<all_viscaItems[i].bytePosB;
-                
-                addCommand(1, all_viscaItems[i].item_command, all_viscaItems[i].bytePosA, valA ,all_viscaItems[i].bytePosB, valB);
-            }
-        }
-    }
-     */
+
     /*
      int myByte = serial.readByte();
      
@@ -212,18 +136,8 @@ void ofxVisca::update(){
 }
 
 void ofxVisca::draw(int _x, int _y){
-    //    ofPushMatrix();
-    //    ofTranslate(_x, _y);
-    //    int temp_y = 0;
-    //    ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
-    //    ofDrawBitmapString("key n | hide menu", 0, temp_y+=15);
-    //    ofDrawBitmapString("key m | show menu", 0, temp_y+=15);
-    //    ofDrawBitmapString("key 2 | IR pass filter", 0, temp_y+=15);
-    //    ofDrawBitmapString("key 3 | IR cut filter", 0, temp_y+=15);
-    //    ofPopMatrix();
-    
-    // draw recent unrecognized messages
-    
+
+    // draw recent serial messages    
     if(serialID == ""){
         ofDrawBitmapStringHighlight("serial device not found", 10, 15);
     }else{
@@ -244,6 +158,8 @@ void ofxVisca::draw(int _x, int _y){
             msgStrings[i] = "";
         }
     }
+    
+    if(bEditMode) ofDrawBitmapStringHighlight("GUI edit enabled", ofGetWidth()/2, ofGetHeight()/2);
 }
 
 void ofxVisca::addCommand(int _camID, vector<unsigned char> _command){
@@ -286,9 +202,20 @@ void ofxVisca::addCommand(int _camID, vector<unsigned char> _command, int _byteP
 void ofxVisca::keyReleased(int key){ 
     
     if(key =='e'){
-         for(auto & button: buttonGroup){
-        button.bEditMode = !button.bEditMode;
-         }
+        
+        bEditMode = !bEditMode;
+
+        if(bEditMode == false){
+            for(auto & button: buttonGroup){
+                button.bEditMode = false;
+                button.saveButton(XML);
+            }
+            XML.saveFile("visca_GuiSettings.xml");
+        }else{
+            for(auto & button: buttonGroup){
+                button.bEditMode = true;
+            }
+        }
     }
  
     if(key == '0'){

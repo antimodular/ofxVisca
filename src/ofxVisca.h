@@ -108,32 +108,20 @@ public:
     void draw(int _x, int _y);
     void keyReleased(int key);
     
-    vector<vector<unsigned char>> serialMessages;    
+    
     
     void addCommand(int _camID, vector<unsigned char> _command);
     void addCommand(int _camID, vector<unsigned char> _command, int _bytePosA, int _valueA, int _bytePosB = -1, int _valueB = -1);
-    
-    ofxPanel gui_visca;
-     ofParameterGroup parameters_menu;
 
-    ofParameterGroup parameters_lens;
-//    ofParameter<bool> dnManual;
-//    ofParameter<bool> day;
-//    ofParameter<bool> night;
-    
-    ofParameterGroup parameters_wb;
-    
-    ofParameterGroup parameters_dzoom;
     
     visca_commands commands;
-    
-    vector<visca_item> all_viscaItems;
     
     vector<viscaButton> buttonGroup;
 
 private:	
     
     ofxXmlSettings XML;
+    bool bEditMode;
     
     ofSerial serial;
     bool serialActive;
@@ -144,6 +132,7 @@ private:
     bool bSerialConnected;
     int serialSendPause;
     
+      vector<vector<unsigned char>> serialMessages;  
 
     
     void serialSending();
