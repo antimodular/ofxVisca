@@ -8,8 +8,10 @@
 void ofApp::setup(){
     ofSetVerticalSync(true);
     
+    
     bSendSerialMessage = false;
-    ofBackground(255);    
+//    ofBackground(241,150,33);   
+        ofBackground(71,6,60); 
 //    ofSetLogLevel(OF_LOG_VERBOSE);
     
     visca_object.connect();

@@ -53,49 +53,78 @@ bool ofxVisca::connect(int _device){
     }
 //    myBaud = 9600; //57600; //115200;
     serialActive = serial.setup(serialID,myBaud);
-    serialSendPause = 200;
+    serialSendPause = 50; //300;
     lastSendTime = ofGetElapsedTimeMillis();
     
 //    vector<unsigned char> _command
-    buttonGroup.resize(25); 
+    buttonGroup.resize(49); 
     int mX = 300;
     int mY = 300;
     int mW = 100;
     int mH = 50;
     int m = 0;
-//    buttonGroup[m++].setup("MenuOn",1,{commands.menuON},10, 60 , mW, mH);
-    buttonGroup[m++].setup("MenuOn",1,{commands.menuON},XML);
-    buttonGroup[m++].setup("MenuOff",1,{commands.menuOFF},XML);
-    buttonGroup[m++].setup("MenuBack",1,{commands.menuBACK},XML);
+//    buttonGroup[m++].setup("MenuOn",1,XML,{commands.menuON},10, 60 , mW, mH);
+    buttonGroup[m++].setup("MenuOn",1,XML,{commands.menuON},0,0,&emptyValue);
+    buttonGroup[m++].setup("MenuOff",1,XML,{commands.menuOFF},0,0,&emptyValue);
+    buttonGroup[m++].setup("MenuBack",1,XML,{commands.menuBACK},0,0,&emptyValue);
     
-    buttonGroup[m++].setup("MenuUp",1,{commands.menuUP},XML);
-    buttonGroup[m++].setup("MenuDown",1,{commands.menuDOWN},XML);
+    buttonGroup[m++].setup("MenuUp",1,XML,{commands.menuUP},0,0,&emptyValue);
+    buttonGroup[m++].setup("MenuDown",1,XML,{commands.menuDOWN},0,0,&emptyValue);
    
-    buttonGroup[m++].setup("MenuLeft",1,{commands.menuLEFT},XML);
-    buttonGroup[m++].setup("MenuRight",1,{commands.menuRIGHT},XML);
+    buttonGroup[m++].setup("MenuLeft",1,XML,{commands.menuLEFT},0,0,&emptyValue);
+    buttonGroup[m++].setup("MenuRight",1,XML,{commands.menuRIGHT},0,0,&emptyValue);
 
-    buttonGroup[m++].setup("camReset",1,{commands.camReset},XML);
-    buttonGroup[m++].setup("lensInit",1,{commands.lensInit},XML);
-    buttonGroup[m++].setup("saveCustom",1,{commands.saveCustom},XML);
+    buttonGroup[m++].setup("camReset",1,XML,{commands.camReset},0,0,&emptyValue);
+    buttonGroup[m++].setup("lensInit",1,XML,{commands.lensInit},0,0,&emptyValue);
+    buttonGroup[m++].setup("saveCustom",1,XML,{commands.saveCustom},0,0,&emptyValue);
+    buttonGroup[m++].setup("recallCustom",1,XML,{commands.recallCustom},0,0,&emptyValue);
     
-    buttonGroup[m++].setup("flipOn",1,{commands.flipOn},XML);
-    buttonGroup[m++].setup("flipOff",1,{commands.flipOff},XML);
-    buttonGroup[m++].setup("mirrorOn",1,{commands.mirrorOn},XML);
-    buttonGroup[m++].setup("mirrorOff",1,{commands.mirrorOff},XML);
+    buttonGroup[m++].setup("flipOn",1,XML,{commands.flipOn},0,0,&emptyValue);
+    buttonGroup[m++].setup("flipOff",1,XML,{commands.flipOff},0,0,&emptyValue);
+    buttonGroup[m++].setup("mirrorOn",1,XML,{commands.mirrorOn},0,0,&emptyValue);
+    buttonGroup[m++].setup("mirrorOff",1,XML,{commands.mirrorOff},0,0,&emptyValue);
     
-    buttonGroup[m++].setup("redDown",1,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom},XML);
-    buttonGroup[m++].setup("redUp",1,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom},XML); 
-    buttonGroup[m++].setup("blueDown",1,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom},XML);
-    buttonGroup[m++].setup("blueUp",1,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom},XML);
+//    buttonGroup[m++].setup("redDown",1,XML,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom},0,0,&emptyValue);
+//    buttonGroup[m++].setup("redUp",1,XML,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom},0,0,&emptyValue); 
+//    buttonGroup[m++].setup("blueDown",1,XML,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom},0,0,&emptyValue);
+//    buttonGroup[m++].setup("blueUp",1,XML,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom},0,0,&emptyValue);
+
+    buttonGroup[m++].setup("redDown",1,XML,{commands.wbRGain_Down},0,0,&emptyValue);
+    buttonGroup[m++].setup("redUp",1,XML,{commands.wbRGain_Down},0,0,&emptyValue); 
+    buttonGroup[m++].setup("blueDown",1,XML,{commands.wbBGain_Down},0,0,&emptyValue);
+    buttonGroup[m++].setup("blueUp",1,XML,{commands.wbBGain_Down},0,0,&emptyValue);
+
     
     int temp_x = 0; //temp_x+=100
-    buttonGroup[m++].setup("wbAuto",1,{commands.wbAuto},XML);
-    buttonGroup[m++].setup("wbIndoor",1,{commands.wbIndoor},XML);
-    buttonGroup[m++].setup("wbOutdoor",1,{commands.wbOutdoor},XML);
-    buttonGroup[m++].setup("wbOnePush",1,{commands.wbOnePush},XML);
-    buttonGroup[m++].setup("wbATW",1,{commands.wbATW},XML);
-    buttonGroup[m++].setup("wbPushTrig",1,{commands.wbOnePushTrig},XML);
-    buttonGroup[m++].setup("wbManual",1,{commands.wbManual},XML);
+    buttonGroup[m++].setup("wbAuto",1,XML,{commands.wbAuto},0,0,&emptyValue);
+    buttonGroup[m++].setup("wbIndoor",1,XML,{commands.wbIndoor},0,0,&emptyValue);
+    buttonGroup[m++].setup("wbOutdoor",1,XML,{commands.wbOutdoor},0,0,&emptyValue);
+    buttonGroup[m++].setup("wbOnePush",1,XML,{commands.wbOnePush},0,0,&emptyValue);
+    buttonGroup[m++].setup("wbATW",1,XML,{commands.wbATW},0,0,&emptyValue);
+    buttonGroup[m++].setup("wbPushTrig",1,XML,{commands.wbOnePushTrig},0,0,&emptyValue);
+    buttonGroup[m++].setup("wbManual",1,XML,{commands.wbManual},0,0,&emptyValue);
+   
+    buttonGroup[m++].setup("brightDown",1,XML,{commands.brightnessDown},-1,20,&brightnessValue);
+    buttonGroup[m++].setup("brightUp",1,XML,{commands.brightnessUp},1,20,&brightnessValue);
+    buttonGroup[m++].setup("sharpDown",1,XML,{commands.sharpDown},0,0,&emptyValue);
+    buttonGroup[m++].setup("sharpUp",1,XML,{commands.sharpUp},0,0,&emptyValue);
+    buttonGroup[m++].setup("satDown",1,XML,{commands.satDown},0,0,&emptyValue);
+    buttonGroup[m++].setup("satUp",1,XML,{commands.satUp},0,0,&emptyValue);
+    
+    buttonGroup[m++].setup("contrastDown",1,XML,{commands.contrastDown},0,0,&emptyValue);
+    buttonGroup[m++].setup("contrastUp",1,XML,{commands.contrastUp},0,0,&emptyValue);
+    buttonGroup[m++].setup("gammaDown",1,XML,{commands.gammaDown},-1,100,&gammaValue);
+    buttonGroup[m++].setup("gammaUp",1,XML,{commands.gammaUp},1,100,&gammaValue);
+    
+    //-----video format
+    buttonGroup[m++].setup("HDp24",1,XML,{commands.format1080p24},0,0,&emptyValue);
+    buttonGroup[m++].setup("HDp25",1,XML,{commands.format1080p25},0,0,&emptyValue);
+    buttonGroup[m++].setup("HDp30",1,XML,{commands.format1080p30},0,0,&emptyValue);
+    buttonGroup[m++].setup("HDp50",1,XML,{commands.format1080p50},0,0,&emptyValue);
+    buttonGroup[m++].setup("HDp60",1,XML,{commands.format1080p60},0,0,&emptyValue);
+    buttonGroup[m++].setup("UHDp25",1,XML,{commands.formatUHDp25},0,0,&emptyValue);
+    buttonGroup[m++].setup("fourKp30",1,XML,{commands.format4kp30},0,0,&emptyValue);
+    buttonGroup[m++].setup("fourKp60",1,XML,{commands.format4kp60},0,0,&emptyValue);
     
     bEditMode = false;
     
@@ -121,22 +150,67 @@ void ofxVisca::update(){
             button.bUseCommand = false;
             for(int i=0; i<button.commands.size(); i++){
                 addCommand(button.camID, button.commands[i]);
+                if(button.getLabelString() == "gammaDown" || button.getLabelString() == "gammaUp"){
+                    ofLog()<<"gammaValue "<<gammaValue;
+                     ofLog()<<"button.value "<<*button.value;
+                }
             }
         }
     }
     
-
+    // check for data
     /*
-     int myByte = serial.readByte();
+    if ( serial.available() > 0 )
+    {
+        ofLog()<<"serial.available() > 0";
+        // we want to read 8 bytes
+        int bytesRequired = 8;
+        unsigned char bytes[bytesRequired];
+        int bytesRemaining = bytesRequired;
+        // loop until we've read everything
+        while ( bytesRemaining > 0 )
+        {
+            
+            // try to read - note offset into the bytes[] array, this is so
+            // that we don't overwrite the bytes we already have
+            int bytesArrayOffset = bytesRequired - bytesRemaining;
+            int result = serial.readBytes( &bytes[bytesArrayOffset],
+                                          bytesRemaining );
+            
+            // check for error code
+            if ( result == OF_SERIAL_ERROR )
+            {
+                // something bad happened
+                ofLog( OF_LOG_ERROR, "unrecoverable error reading from serial" );
+                // bail out
+                break;
+            }
+            else if ( result == OF_SERIAL_NO_DATA )
+            {
+                // nothing was read, try again
+            }
+            else
+            {
+                // we read some data!
+                bytesRemaining -= result;
+            }
+        }
+    }
+    */
+//    if(serial.available() > 8) {
+//        serial.readBytes(buffer, 8);
+//    }
+//    
+//    int myByte = serial.readByte();
+//    
+//    if ( myByte == OF_SERIAL_NO_DATA ){
+//        //        printf("no data was read");
+//    } else if ( myByte == OF_SERIAL_ERROR ){
+//        printf("an error occurred");
+//    } else {
+//        printf("myByte is %d", myByte);
+//    }
      
-     if ( myByte == OF_SERIAL_NO_DATA ){
-     //        printf("no data was read");
-     } else if ( myByte == OF_SERIAL_ERROR ){
-     printf("an error occurred");
-     } else {
-     printf("myByte is %d", myByte);
-     }
-     */
 }
 
 void ofxVisca::draw(int _x, int _y){
@@ -163,7 +237,7 @@ void ofxVisca::draw(int _x, int _y){
         }
     }
     
-    if(bEditMode) ofDrawBitmapStringHighlight("GUI edit enabled", ofGetWidth()/2, ofGetHeight()/2);
+    if(bEditMode) ofDrawBitmapStringHighlight("GUI edit enabled", 10, 35);
 }
 
 void ofxVisca::addCommand(int _camID, vector<unsigned char> _command){
@@ -276,7 +350,7 @@ void ofxVisca::serialSending(){
         for(int i=0; i<serialMessages[0].size();i++){
             cout<<ofToHex(serialMessages[0][i])<<" , ";
 
-            if(i != 0 )msgString += " , ";
+            if(i != 0 )msgString += ",";
             msgString += ofToHex(serialMessages[0][i]);
            
         }
@@ -304,7 +378,7 @@ void ofxVisca::serialSending(){
         
         // add to the list of strings to display
         msgStrings[currentMsgString] = msgString;
-        timers[currentMsgString] = ofGetElapsedTimef() + 5.0f;
+        timers[currentMsgString] = ofGetElapsedTimef() + 20.0f; //5.0f;
         currentMsgString = (currentMsgString + 1) % NUM_MSG_STRINGS;
         
         // clear the next line

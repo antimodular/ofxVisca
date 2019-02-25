@@ -18,9 +18,14 @@ public:
     bool bEditMode;
     bool bSetPositon;
     
+    int* value;
+    int stepValue;
+    int maxValue;
+    
     //----------------------------------------------------
     viscaButton(){
         bWasSetup = false;
+        value = NULL;
     }
     
     //----------------------------------------------------
@@ -48,23 +53,23 @@ public:
             bWasSetup = true;
         }
     }
-    void setup(string _label,int _camID, vector<vector<unsigned char>> _commands, ofxXmlSettings & XML){
+    void setup(string _label,int _camID,  ofxXmlSettings & XML, vector<vector<unsigned char>> _commands,int _stepValue, int _maxValue,  int* _value){
         
         labelString = _label; 
         
-//        if(!XML.tagExists("BUTTONS:"+labelString+":x")){
-//            ofLog()<<"XML BUTTONS does not exists";
-//        }
+        if(!XML.tagExists("BUTTONS:"+labelString+":x")){
+            ofLog()<<_label<<" XML BUTTONS does not exists";
+        }
         
         x = XML.getValue("BUTTONS:"+labelString+":x", ofRandom(ofGetWidth()-200));
         y = XML.getValue("BUTTONS:"+labelString+":y", ofRandom(ofGetWidth()-200));
         width = XML.getValue("BUTTONS:"+labelString+":w", 100);
         height = XML.getValue("BUTTONS:"+labelString+":h", 50);
         
-        setup(_label, _camID, _commands, x,y,width,height);
+        setup(_label, _camID, _commands, x,y,width,height, _stepValue, _maxValue, _value);
     }
 
-    void setup(string _label,int _camID, vector<vector<unsigned char>> _commands, float _x, float _y, float _w, float _h){
+    void setup(string _label,int _camID, vector<vector<unsigned char>> _commands, float _x, float _y, float _w, float _h,int _stepValue, int _maxValue,  int* _value){
         
         labelString = _label; 
         
@@ -74,6 +79,15 @@ public:
         height = _h;
         camID = _camID;
         
+        stepValue = _stepValue;
+        maxValue = _maxValue;
+        value = _value;
+        //https://www.tutorialspoint.com/cplusplus/cpp_pointers.htm
+        if(labelString == "gammaDown" || labelString == "gammaUp"){
+            ofLog()<<" value "<<*value<<" _value "<<*_value;
+            cout<<" value "<<*value<<" _value "<<*_value<<endl;
+           
+        }
         bHasFocus = false;
         bInside = false;
         bUseCommand = false;
@@ -85,6 +99,10 @@ public:
 
         commands = _commands;
         
+        clickColor = ofColor(148,17,57,255); //ofColor(64,64,266, 150)
+        hoverColor = ofColor(148,17,57,200);
+        normalColor =  ofColor(204,63,17,255); // ofColor(148,17,57,150);
+        textColor = ofColor(64,64,64,200);
         enable();
     }
     
@@ -106,30 +124,30 @@ public:
         ofFill();
         if(bInside){
             if (bHasFocus){
-                ofSetColor(64,64,266, 150); //sliderAlpha); 
+                ofSetColor(clickColor); //sliderAlpha); 
             }else{
-                ofSetColor(64,64,266, 50); 
+                ofSetColor(hoverColor); 
             }
         }else{
-            ofSetColor(64,64,64, 50);
+            ofSetColor(normalColor);
         }
         ofDrawRectangle(0,0, width,height); 
         
         ofNoFill();
         ofSetLineWidth(1.0);
-        ofSetColor(64,64,64, 150);
+        ofSetColor(clickColor);
         ofDrawRectangle(0,0, width,height); 
         
         // draw focus value 
-        if (bHasFocus){
-            ofSetColor(0); 
-        } else {
-            ofSetColor(128); 
-        }
+//        if (bHasFocus){
+//            ofSetColor(0); 
+//        } else {
+//            ofSetColor(128); 
+//        }
         
         //            ofDrawBitmapString( ofToString(getValue(),numberDisplayPrecision), width+5,height/2 + 4);
         
-        ofSetColor(64,64,64, 200);
+        ofSetColor(textColor);
         float labelStringWidth = labelString.size();
         //        ofDrawBitmapString( labelString, 0-labelStringWidth*8-5, height/2 + 4); 
         ofDrawBitmapString( labelString, width/2 - ((labelStringWidth*8-5) / 2), height/2 + 4); 
@@ -142,14 +160,16 @@ public:
     void setLabelString (string str){
         labelString = str;
     }
-    
+    string getLabelString (){
+        return labelString;
+    }
     void mousePressed(ofMouseEventArgs& event){
         bHasFocus = false;
         if (box.inside(event.x, event.y)){
             if(bEditMode){
                 bSetPositon = true;
             } else {
-            bHasFocus = true;
+                bHasFocus = true;
             //            updatePercentFromMouse (event.x, event.y); 
             ofLog()<<"mousePressed "<<labelString;
             }
@@ -163,6 +183,8 @@ public:
                 //                updatePercentFromMouse (event.x, event.y); 
                 ofLog()<<"mouseReleased "<<labelString;
                 bUseCommand = true;
+                    *value -= stepValue;
+                    *value = ofClamp(*value,0,maxValue);
                 printCommands();
                 }
             }
@@ -247,6 +269,10 @@ protected:
     bool bInside;
     string    labelString; 
     
+    ofColor clickColor;
+    ofColor hoverColor;
+    ofColor normalColor;
+     ofColor textColor;
 //    vector<vector<unsigned char>> commands;
 //    int camID;
     

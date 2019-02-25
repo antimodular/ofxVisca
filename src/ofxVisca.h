@@ -11,7 +11,7 @@
 #include "viscaButton.h"
 #include "viscaCommands.h"
 
-#define NUM_MSG_STRINGS 10
+#define NUM_MSG_STRINGS 50
 
 class visca_item{
     
@@ -147,4 +147,10 @@ private:
     int currentMsgString;
     string msgStrings[NUM_MSG_STRINGS];
     float timers[NUM_MSG_STRINGS];
+    
+    
+    int emptyValue = -1;
+    int brightnessValue;
+        int gammaValue;
+    
 };
