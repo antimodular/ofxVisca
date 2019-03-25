@@ -20,8 +20,12 @@ public:
     
     int* value;
     int stepValue;
-    int maxValue;
     
+    int defaultValue;
+    int minValue;
+    int maxValue;
+    int bytePosA;
+    int bytePosB;
     //----------------------------------------------------
     viscaButton(){
         bWasSetup = false;
@@ -53,7 +57,7 @@ public:
             bWasSetup = true;
         }
     }
-    void setup(string _label,int _camID,  ofxXmlSettings & XML, vector<vector<unsigned char>> _commands,int _stepValue, int _maxValue,  int* _value){
+    void setup(string _label,int _camID,  ofxXmlSettings & XML, vector<vector<unsigned char>> _commands, int _stepValue = 0, vector<int> _specs = vector<int>(),  int* _value = 0){
         
         labelString = _label; 
         
@@ -66,10 +70,10 @@ public:
         width = XML.getValue("BUTTONS:"+labelString+":w", 100);
         height = XML.getValue("BUTTONS:"+labelString+":h", 50);
         
-        setup(_label, _camID, _commands, x,y,width,height, _stepValue, _maxValue, _value);
+        setup(_label, _camID, _commands, x,y,width,height, _stepValue, _specs, _value);
     }
 
-    void setup(string _label,int _camID, vector<vector<unsigned char>> _commands, float _x, float _y, float _w, float _h,int _stepValue, int _maxValue,  int* _value){
+    void setup(string _label,int _camID, vector<vector<unsigned char>> _commands, float _x, float _y, float _w, float _h,int _stepValue = 0 , vector<int> _specs = vector<int>(),  int* _value = 0){
         
         labelString = _label; 
         
@@ -79,8 +83,15 @@ public:
         height = _h;
         camID = _camID;
         
-        stepValue = _stepValue;
-        maxValue = _maxValue;
+         stepValue = _stepValue;
+        
+        if(_specs.size() > 0){
+            defaultValue = _specs[0];
+            minValue = _specs[1];
+            maxValue = _specs[2];
+             bytePosA = _specs[3];
+             bytePosB = _specs[4];
+        }
         value = _value;
         //https://www.tutorialspoint.com/cplusplus/cpp_pointers.htm
         if(labelString == "gammaDown" || labelString == "gammaUp"){
@@ -180,20 +191,42 @@ public:
         if (bHasFocus){
             if (box.inside(event.x, event.y)){
                 if(bEditMode == false){
-                //                updatePercentFromMouse (event.x, event.y); 
-                ofLog()<<"mouseReleased "<<labelString;
-                bUseCommand = true;
-                    *value -= stepValue;
-                    *value = ofClamp(*value,0,maxValue);
-                printCommands();
+                    //                updatePercentFromMouse (event.x, event.y); 
+                    ofLog()<<"mouseReleased "<<labelString;
+                    bUseCommand = true;
+                    
+                    if(stepValue != 0){
+                        
+                        //some buttons might execute multiple commands; like set to manual and then UP value
+                          int command_index = commands.size() - 1;
+                        
+//                        *value += stepValue;
+//                        *value = ofClamp(*value,0,maxValue);
+                        commands[command_index][bytePosA] = (unsigned char) *value; // in case *value was modified by other up or down button, we need to carry it over first
+                        
+//                        ofLog()<<labelString<<" *value "<<*value;
+                        //we construct the new value. 
+//                        ofLog()<<"bytePosA "<<bytePosA<<" bytePosB "<<bytePosB;
+                        
+                      //*value is a pointer so that other UP or DOWN button can also have access to this value
+                        *value = int(commands[command_index][bytePosA]) + stepValue;
+                        *value = ofClamp(*value,0,maxValue);
+                        
+//                        ofLog()<<"byte# "<<ofToString(bytePosA)<<" as int "<<int(commands[command_index][bytePosA])<<" newValue "<<*value;
+                        
+                        //since default is 0x00 it's like setting it to the new value
+                        commands[command_index][bytePosA] = (unsigned char) *value;
+//                        ofLog()<<"new byteA as hex "<<ofToHex(commands[command_index][bytePosA]);
+                    }
+                    printCommands();
                 }
             }
         }
         bHasFocus = false;
-
-         if(bEditMode && bSetPositon){
-             ofLog()<<labelString<<" : "<<x<<" , "<<y;
-         }
+        
+        if(bEditMode && bSetPositon){
+            ofLog()<<labelString<<" : "<<x<<" , "<<y;
+        }
         bSetPositon = false;
          
     }

@@ -57,75 +57,85 @@ bool ofxVisca::connect(int _device){
     lastSendTime = ofGetElapsedTimeMillis();
     
 //    vector<unsigned char> _command
-    buttonGroup.resize(49); 
+    buttonGroup.resize(56); 
     int mX = 300;
     int mY = 300;
     int mW = 100;
     int mH = 50;
     int m = 0;
 //    buttonGroup[m++].setup("MenuOn",1,XML,{commands.menuON},10, 60 , mW, mH);
-    buttonGroup[m++].setup("MenuOn",1,XML,{commands.menuON},0,0,&emptyValue);
-    buttonGroup[m++].setup("MenuOff",1,XML,{commands.menuOFF},0,0,&emptyValue);
-    buttonGroup[m++].setup("MenuBack",1,XML,{commands.menuBACK},0,0,&emptyValue);
+    buttonGroup[m++].setup("MenuOn",1,XML,{commands.menuON});
+    buttonGroup[m++].setup("MenuOff",1,XML,{commands.menuOFF});
+    buttonGroup[m++].setup("MenuBack",1,XML,{commands.menuBACK});
     
-    buttonGroup[m++].setup("MenuUp",1,XML,{commands.menuUP},0,0,&emptyValue);
-    buttonGroup[m++].setup("MenuDown",1,XML,{commands.menuDOWN},0,0,&emptyValue);
+    buttonGroup[m++].setup("MenuUp",1,XML,{commands.menuUP});
+    buttonGroup[m++].setup("MenuDown",1,XML,{commands.menuDOWN});
    
-    buttonGroup[m++].setup("MenuLeft",1,XML,{commands.menuLEFT},0,0,&emptyValue);
-    buttonGroup[m++].setup("MenuRight",1,XML,{commands.menuRIGHT},0,0,&emptyValue);
+    buttonGroup[m++].setup("MenuLeft",1,XML,{commands.menuLEFT});
+    buttonGroup[m++].setup("MenuRight",1,XML,{commands.menuRIGHT});
 
-    buttonGroup[m++].setup("camReset",1,XML,{commands.camReset},0,0,&emptyValue);
-    buttonGroup[m++].setup("lensInit",1,XML,{commands.lensInit},0,0,&emptyValue);
-    buttonGroup[m++].setup("saveCustom",1,XML,{commands.saveCustom},0,0,&emptyValue);
-    buttonGroup[m++].setup("recallCustom",1,XML,{commands.recallCustom},0,0,&emptyValue);
+    buttonGroup[m++].setup("camReset",1,XML,{commands.camReset});
+    buttonGroup[m++].setup("lensInit",1,XML,{commands.lensInit});
+    buttonGroup[m++].setup("saveCustom",1,XML,{commands.saveCustom});
+    buttonGroup[m++].setup("recallCustom",1,XML,{commands.recallCustom});
     
-    buttonGroup[m++].setup("flipOn",1,XML,{commands.flipOn},0,0,&emptyValue);
-    buttonGroup[m++].setup("flipOff",1,XML,{commands.flipOff},0,0,&emptyValue);
-    buttonGroup[m++].setup("mirrorOn",1,XML,{commands.mirrorOn},0,0,&emptyValue);
-    buttonGroup[m++].setup("mirrorOff",1,XML,{commands.mirrorOff},0,0,&emptyValue);
+    buttonGroup[m++].setup("flipOn",1,XML,{commands.flipOn});
+    buttonGroup[m++].setup("flipOff",1,XML,{commands.flipOff});
+    buttonGroup[m++].setup("mirrorOn",1,XML,{commands.mirrorOn});
+    buttonGroup[m++].setup("mirrorOff",1,XML,{commands.mirrorOff});
     
-//    buttonGroup[m++].setup("redDown",1,XML,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom},0,0,&emptyValue);
-//    buttonGroup[m++].setup("redUp",1,XML,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom},0,0,&emptyValue); 
-//    buttonGroup[m++].setup("blueDown",1,XML,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom},0,0,&emptyValue);
-//    buttonGroup[m++].setup("blueUp",1,XML,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom},0,0,&emptyValue);
+//    buttonGroup[m++].setup("redDown",1,XML,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom});
+//    buttonGroup[m++].setup("redUp",1,XML,{commands.wbManual,commands.wbRGain_Down,commands.saveCustom}); 
+//    buttonGroup[m++].setup("blueDown",1,XML,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom});
+//    buttonGroup[m++].setup("blueUp",1,XML,{commands.wbManual,commands.wbBGain_Down,commands.saveCustom});
 
-    buttonGroup[m++].setup("redDown",1,XML,{commands.wbRGain_Down},0,0,&emptyValue);
-    buttonGroup[m++].setup("redUp",1,XML,{commands.wbRGain_Down},0,0,&emptyValue); 
-    buttonGroup[m++].setup("blueDown",1,XML,{commands.wbBGain_Down},0,0,&emptyValue);
-    buttonGroup[m++].setup("blueUp",1,XML,{commands.wbBGain_Down},0,0,&emptyValue);
+    buttonGroup[m++].setup("redDown",1,XML,{commands.wbRGain_Down});
+    buttonGroup[m++].setup("redUp",1,XML,{commands.wbRGain_Down}); 
+    buttonGroup[m++].setup("blueDown",1,XML,{commands.wbBGain_Down});
+    buttonGroup[m++].setup("blueUp",1,XML,{commands.wbBGain_Down});
 
     
     int temp_x = 0; //temp_x+=100
-    buttonGroup[m++].setup("wbAuto",1,XML,{commands.wbAuto},0,0,&emptyValue);
-    buttonGroup[m++].setup("wbIndoor",1,XML,{commands.wbIndoor},0,0,&emptyValue);
-    buttonGroup[m++].setup("wbOutdoor",1,XML,{commands.wbOutdoor},0,0,&emptyValue);
-    buttonGroup[m++].setup("wbOnePush",1,XML,{commands.wbOnePush},0,0,&emptyValue);
-    buttonGroup[m++].setup("wbATW",1,XML,{commands.wbATW},0,0,&emptyValue);
-    buttonGroup[m++].setup("wbPushTrig",1,XML,{commands.wbOnePushTrig},0,0,&emptyValue);
-    buttonGroup[m++].setup("wbManual",1,XML,{commands.wbManual},0,0,&emptyValue);
+    buttonGroup[m++].setup("wbAuto",1,XML,{commands.wbAuto});
+    buttonGroup[m++].setup("wbIndoor",1,XML,{commands.wbIndoor});
+    buttonGroup[m++].setup("wbOutdoor",1,XML,{commands.wbOutdoor});
+    buttonGroup[m++].setup("wbOnePush",1,XML,{commands.wbOnePush});
+    buttonGroup[m++].setup("wbATW",1,XML,{commands.wbATW});
+    buttonGroup[m++].setup("wbPushTrig",1,XML,{commands.wbOnePushTrig});
+    buttonGroup[m++].setup("wbManual",1,XML,{commands.wbManual});
    
-    buttonGroup[m++].setup("brightDown",1,XML,{commands.brightnessDown},-1,20,&brightnessValue);
-    buttonGroup[m++].setup("brightUp",1,XML,{commands.brightnessUp},1,20,&brightnessValue);
-    buttonGroup[m++].setup("sharpDown",1,XML,{commands.sharpDown},0,0,&emptyValue);
-    buttonGroup[m++].setup("sharpUp",1,XML,{commands.sharpUp},0,0,&emptyValue);
-    buttonGroup[m++].setup("satDown",1,XML,{commands.satDown},0,0,&emptyValue);
-    buttonGroup[m++].setup("satUp",1,XML,{commands.satUp},0,0,&emptyValue);
+//    buttonGroup[m++].setup("brightDown",1,XML,{commands.brightnessDown},-1,commands.brightnessSpecs,&brightnessValue);
+//    buttonGroup[m++].setup("brightUp",1,XML,{commands.brightnessUp},1,commands.brightnessSpecs,&brightnessValue);
+       buttonGroup[m++].setup("brightOn",1,XML,{commands.brightnessOn});
+      buttonGroup[m++].setup("brightOff",1,XML,{commands.brightnessOff});
+    buttonGroup[m++].setup("brightDown",1,XML,{commands.brightnessDown});
+    buttonGroup[m++].setup("brightUp",1,XML,{commands.brightnessUp});
     
-    buttonGroup[m++].setup("contrastDown",1,XML,{commands.contrastDown},0,0,&emptyValue);
-    buttonGroup[m++].setup("contrastUp",1,XML,{commands.contrastUp},0,0,&emptyValue);
-    buttonGroup[m++].setup("gammaDown",1,XML,{commands.gammaDown},-1,100,&gammaValue);
-    buttonGroup[m++].setup("gammaUp",1,XML,{commands.gammaUp},1,100,&gammaValue);
+    buttonGroup[m++].setup("sharpDown",1,XML,{commands.sharpDown});
+    buttonGroup[m++].setup("sharpUp",1,XML,{commands.sharpUp});
+    buttonGroup[m++].setup("satDown",1,XML,{commands.satDown},-1,commands.satSpecs,&satValue);
+    buttonGroup[m++].setup("satUp",1,XML,{commands.satUp},1,commands.satSpecs,&satValue);
+    
+    buttonGroup[m++].setup("contrastDown",1,XML,{commands.contrastDown}, -1,commands.contrastSpecs,&contrastValue);
+    buttonGroup[m++].setup("contrastUp",1,XML,{commands.contrastUp},  1,commands.contrastSpecs,&contrastValue);
+    buttonGroup[m++].setup("gammaDown",1,XML,{commands.gammaDown}, -1,commands.gammaSpecs,&gammaValue);
+    buttonGroup[m++].setup("gammaUp",1,XML,{commands.gammaUp}, 1,commands.gammaSpecs,&gammaValue);
     
     //-----video format
-    buttonGroup[m++].setup("HDp24",1,XML,{commands.format1080p24},0,0,&emptyValue);
-    buttonGroup[m++].setup("HDp25",1,XML,{commands.format1080p25},0,0,&emptyValue);
-    buttonGroup[m++].setup("HDp30",1,XML,{commands.format1080p30},0,0,&emptyValue);
-    buttonGroup[m++].setup("HDp50",1,XML,{commands.format1080p50},0,0,&emptyValue);
-    buttonGroup[m++].setup("HDp60",1,XML,{commands.format1080p60},0,0,&emptyValue);
-    buttonGroup[m++].setup("UHDp25",1,XML,{commands.formatUHDp25},0,0,&emptyValue);
-    buttonGroup[m++].setup("fourKp30",1,XML,{commands.format4kp30},0,0,&emptyValue);
-    buttonGroup[m++].setup("fourKp60",1,XML,{commands.format4kp60},0,0,&emptyValue);
+    buttonGroup[m++].setup("HDp24",1,XML,{commands.format1080p24});
+    buttonGroup[m++].setup("HDp25",1,XML,{commands.format1080p25});
+    buttonGroup[m++].setup("HDp30",1,XML,{commands.format1080p30});
+    buttonGroup[m++].setup("HDp50",1,XML,{commands.format1080p50});
+    buttonGroup[m++].setup("HDp60",1,XML,{commands.format1080p60});
+    buttonGroup[m++].setup("UHDp25",1,XML,{commands.formatUHDp25});
+     buttonGroup[m++].setup("UHDp30",1,XML,{commands.formatUHDp30});
+    buttonGroup[m++].setup("fourKp30",1,XML,{commands.format4kp30});
+    buttonGroup[m++].setup("fourKp60",1,XML,{commands.format4kp60});
+     buttonGroup[m++].setup("half720p50",1,XML,{commands.format720p50});
+      buttonGroup[m++].setup("half720p60",1,XML,{commands.format720p60});
     
+      buttonGroup[m++].setup("colorYUV",1,XML,{commands.colorYUV});
+      buttonGroup[m++].setup("colorRGB",1,XML,{commands.colorRGB});
     bEditMode = false;
     
     bShowGui = true;

@@ -14,12 +14,17 @@ System
 
 Used Equipment
 ------
-* Marshall Electronics USB to RS-485/RS-422 Converter, MFR # CV-USB-RS485
 * Marshall Electronics CV345-CS HD 2.5MP 3G-SDI/HDMI Compact Progressive Camera, MFR # CV345-CS
 * Marshall Electronics CV380-CS 4K 8.5MP 6G-SDI & HDMI CS/C-Mount Compact Camera, MFR # CV380-CS
 * Magewell USB Capture SDI Gen 2, MFR # 32070
 
+* Marshall Electronics USB to RS-485/RS-422 Converter, MFR # CV-USB-RS485
+* SparkFun USB to RS-485 Converter,  MFR # BOB-09822
+
 Screenshots
 -----------------
 * Here are screenshots of my project setup:
-![](https://raw.githubusercontent.com/antimodular/ofxVisca/master/docs/Screen_Shot.jpg)
+![](https://raw.githubusercontent.com/antimodular/ofxVisca/master/docs/Screen_Shot_v2.jpg)
+![](https://raw.githubusercontent.com/antimodular/ofxVisca/master/docs/MARSHALL_CV-USB-RS485.jpg)
+![](https://raw.githubusercontent.com/antimodular/ofxVisca/master/docs/sparkfun_BOB-09822.jpg)
+

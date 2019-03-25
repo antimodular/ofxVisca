@@ -151,6 +151,9 @@ private:
     
     int emptyValue = -1;
     int brightnessValue;
+    int satValue;
+    int contrastValue;
         int gammaValue;
+    
     
 };

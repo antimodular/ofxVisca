@@ -151,61 +151,61 @@
     </wbManual>
     <brightDown>
         <x>390.000000000</x>
-        <y>270.000000000</y>
+        <y>650.000000000</y>
         <width>100.000000000</width>
         <height>50.000000000</height>
     </brightDown>
     <brightUp>
         <x>390.000000000</x>
-        <y>320.000000000</y>
+        <y>600.000000000</y>
         <width>100.000000000</width>
         <height>50.000000000</height>
     </brightUp>
     <sharpDown>
         <x>280.000000000</x>
-        <y>380.000000000</y>
+        <y>430.000000000</y>
         <width>100.000000000</width>
         <height>50.000000000</height>
     </sharpDown>
     <sharpUp>
         <x>280.000000000</x>
-        <y>430.000000000</y>
+        <y>380.000000000</y>
         <width>100.000000000</width>
         <height>50.000000000</height>
     </sharpUp>
     <satDown>
         <x>280.000000000</x>
-        <y>270.000000000</y>
+        <y>320.000000000</y>
         <width>100.000000000</width>
         <height>50.000000000</height>
     </satDown>
     <satUp>
         <x>280.000000000</x>
-        <y>320.000000000</y>
+        <y>270.000000000</y>
         <width>100.000000000</width>
         <height>50.000000000</height>
     </satUp>
     <contrastDown>
         <x>500.000000000</x>
-        <y>380.000000000</y>
+        <y>430.000000000</y>
         <width>100.000000000</width>
         <height>50.000000000</height>
     </contrastDown>
     <contrastUp>
         <x>500.000000000</x>
-        <y>430.000000000</y>
+        <y>380.000000000</y>
         <width>100.000000000</width>
         <height>50.000000000</height>
     </contrastUp>
     <gammaDown>
         <x>390.000000000</x>
-        <y>380.000000000</y>
+        <y>430.000000000</y>
         <width>100.000000000</width>
         <height>50.000000000</height>
     </gammaDown>
     <gammaUp>
         <x>390.000000000</x>
-        <y>430.000000000</y>
+        <y>380.000000000</y>
         <width>100.000000000</width>
         <height>50.000000000</height>
     </gammaUp>
@@ -267,6 +267,48 @@
         <width>100.000000000</width>
         <height>50.000000000</height>
     </HDp50>
+    <brightOn>
+        <x>390.000000000</x>
+        <y>500.000000000</y>
+        <width>100.000000000</width>
+        <height>50.000000000</height>
+    </brightOn>
+    <brightOff>
+        <x>390.000000000</x>
+        <y>550.000000000</y>
+        <width>100.000000000</width>
+        <height>50.000000000</height>
+    </brightOff>
+    <UHDp30>
+        <x>120.000000000</x>
+        <y>680.000000000</y>
+        <width>100.000000000</width>
+        <height>50.000000000</height>
+    </UHDp30>
+    <half720p50>
+        <x>510.000000000</x>
+        <y>630.000000000</y>
+        <width>100.000000000</width>
+        <height>50.000000000</height>
+    </half720p50>
+    <half720p60>
+        <x>510.000000000</x>
+        <y>680.000000000</y>
+        <width>100.000000000</width>
+        <height>50.000000000</height>
+    </half720p60>
+    <colorYUV>
+        <x>380.000000000</x>
+        <y>710.000000000</y>
+        <width>100.000000000</width>
+        <height>50.000000000</height>
+    </colorYUV>
+    <colorRGB>
+        <x>380.000000000</x>
+        <y>760.000000000</y>
+        <width>100.000000000</width>
+        <height>50.000000000</height>
+    </colorRGB>
 </BUTTONS>
 <SERIAL>
     <BAUD>9600</BAUD>
