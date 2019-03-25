@@ -24,7 +24,7 @@ Used Equipment
 Screenshots
 -----------------
 * Here are screenshots of my project setup:
-![](https://raw.githubusercontent.com/antimodular/ofxVisca/master/docs/Screen_Shot_v2.jpg)
+![](https://raw.githubusercontent.com/antimodular/ofxVisca/master/docs/Screen_Shot_v2.png)
 ![](https://raw.githubusercontent.com/antimodular/ofxVisca/master/docs/MARSHALL_CV-USB-RS485.jpg)
 ![](https://raw.githubusercontent.com/antimodular/ofxVisca/master/docs/sparkfun_BOB-09822.jpg)
 
