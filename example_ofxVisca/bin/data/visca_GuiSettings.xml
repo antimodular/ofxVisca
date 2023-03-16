@@ -1,10 +1,10 @@
 <BUTTONS>
-    <MenuOn>
+    <MenuOn-OK>
         <x>10.000000000</x>
         <y>60.000000000</y>
         <width>100.000000000</width>
         <height>50.000000000</height>
-    </MenuOn>
+    </MenuOn-OK>
     <MenuOff>
         <x>10.000000000</x>
         <y>120.000000000</y>

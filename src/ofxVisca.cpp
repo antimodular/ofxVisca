@@ -64,7 +64,7 @@ bool ofxVisca::connect(int _device){
     int mH = 50;
     int m = 0;
 //    buttonGroup[m++].setup("MenuOn",1,XML,{commands.menuON},10, 60 , mW, mH);
-    buttonGroup[m++].setup("MenuOn",1,XML,{commands.menuON});
+    buttonGroup[m++].setup("MenuOn-OK",1,XML,{commands.menuON});
     buttonGroup[m++].setup("MenuOff",1,XML,{commands.menuOFF});
     buttonGroup[m++].setup("MenuBack",1,XML,{commands.menuBACK});
     
@@ -142,6 +142,8 @@ bool ofxVisca::connect(int _device){
     for(auto & button: buttonGroup){
         button.showButton(bShowGui);
     }
+    
+    return true;
 }
 
 
